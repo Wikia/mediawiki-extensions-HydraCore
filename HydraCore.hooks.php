@@ -99,4 +99,26 @@ class HydraCoreHooks {
 
 		return true;
 	}
+
+	/**
+	 * Stops the special master only user groups from being added to accounts on child wikis.
+	 *
+	 * @access	public
+	 * @param	object	Mediawiki User Object
+	 * @param	string	Group name to be added.
+	 * @return	boolean Whether or not to add the group.
+	 */
+	static public function onUserAddGroup($user, &$group) {
+		if (defined('MASTER_WIKI') && MASTER_WIKI === true) {
+			return true;
+		}
+
+		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
+		$masterOnlyUserGroups = (array) $config->get('MasterOnlyUserGroups');
+		if (in_array($group, $masterOnlyUserGroups)) {
+			return false;
+		}
+
+		return true;
+	}
 }

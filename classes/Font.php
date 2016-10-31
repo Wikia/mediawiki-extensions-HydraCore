@@ -129,7 +129,7 @@ class Font {
 	 */
 	public function getFileType() {
 
-		$ceFontTypes = \ConfigFactory::getDefaultInstance()->makeConfig('curse')->get('CEFontTypes');
+		$ceFontTypes = \ConfigFactory::getDefaultInstance()->makeConfig('hydracore')->get('CEFontTypes');
 
 		$lastDot = strrpos($this->data['file_name'], '.');
 		if ($lastDot !== false) {
@@ -169,7 +169,7 @@ class Font {
 	 */
 	public function getUrl() {
 
-		$ceFontUrl = \ConfigFactory::getDefaultInstance()->makeConfig('curse')->get('CEFontUrl');
+		$ceFontUrl = \ConfigFactory::getDefaultInstance()->makeConfig('hydracore')->get('CEFontUrl');
 
 		return rtrim($ceFontUrl, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$this->getFileName();
 	}

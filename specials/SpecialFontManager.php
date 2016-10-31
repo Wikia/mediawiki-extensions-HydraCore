@@ -66,7 +66,7 @@ class SpecialFontManager extends SpecialPage {
 	 */
 	public function fontManagerPage() {
 
-		$config = ConfigFactory::getDefaultInstance()->makeConfig('curse');
+		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 		$ceFontPath = $config->get('CEFontPath');
 
 
@@ -109,7 +109,7 @@ class SpecialFontManager extends SpecialPage {
 	 */
 	public function fontManagerUpload() {
 
-		$config = ConfigFactory::getDefaultInstance()->makeConfig('curse');
+		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 		$ceFontPath = $config->get('CEFontPath');
 
 		$success = false;

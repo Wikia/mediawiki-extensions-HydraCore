@@ -101,10 +101,11 @@
 		"GetPreferences": "HydraCoreHooks::onGetPreferences",
 		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
 		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
-		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile"
+		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
+		"UserAddGroup": "HydraCoreHooks::onUserAddGroup"
 	},
 	"ConfigRegistry": {
-		"curse": "GlobalVarConfig::newInstance"
+		"hydracore": "GlobalVarConfig::newInstance"
 	},
 	"config": {
 		"CEFontPath": "/media/hydra-media/hydra/fonts",
@@ -114,7 +115,17 @@
 			"ttc",
 			"ttf",
 			"woff"
-		]
+		],
+		"MasterOnlyUserGroups": [
+			"ads_manager",
+			"global_bot",
+			"global_bureaucrat",
+			"global_sysop",
+			"hydra_admin",
+			"hydra_staff",
+			"wiki_manager"
+
+		],
 	},
 	"manifest_version": 1
 }
