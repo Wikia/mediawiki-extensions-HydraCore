@@ -1,0 +1,12 @@
+.font_block {
+	border: 1px solid #666;
+	border-radius: 4px;
+	display: block;
+	margin-bottom: 10px;
+	padding: 5px 10px;
+}
+
+#font_upload fieldset {
+	display: inline-block;
+	margin-top: 0;
+}

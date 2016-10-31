@@ -1,0 +1,120 @@
+{
+	"name": "HydraCore",
+	"version": "3.0",
+	"author": [
+		"Wiki Platform Team"
+	],
+	"descriptionmsg": "hydracore_description",
+	"type": "other",
+	"GroupPermissions": {
+		"sysop": {
+			"font_manager": true
+		}
+	},
+	"AvailableRights": [
+		"font_manager",
+		"font_upload"
+	],
+	"SpecialPages": {
+		"FontManager": "SpecialFontManager"
+	},
+	"MessagesDirs": {
+		"HydraCore": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"HydraCoreMagic": "HydraCore.i18n.magic.php",
+		"SpecialHydraCore": "HydraCore.alias.php"
+	},
+	"AutoloadClasses": {
+		"HydraCoreHooks": "HydraCore.hooks.php",
+		"HydraCore": "classes/HydraCore.php",
+		"HydraApiBase": "classes/HydraApiBase.php",
+		"HydraCore\\Font": "classes/Font.php",
+		"HTMLDynamicHiddenField": "classes/HTMLDynamicHiddenField.php",
+		"HydraCore\\SpecialPage": "specials/SpecialPage.php",
+		"SpecialFontManager": "specials/SpecialFontManager.php",
+		"TemplateFontManager": "templates/TemplateFontManager.php",
+		"TemplatePagination": "templates/TemplatePagination.php"
+	},
+	"ResourceModules": {
+		"ext.hydraCore.pagination": {
+			"targets": [
+				"desktop",
+				"mobile"
+			],
+			"styles": [
+				"css/pagination.css"
+			],
+			"position": "bottom"
+		},
+		"ext.hydraCore.button": {
+			"styles": [
+				"css/button.css"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
+			],
+			"position": "bottom"
+		},
+		"ext.hydraCore.font-awesome": {
+			"styles": [
+				"css/font-awesome/font-awesome.less"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
+			],
+			"position": "bottom"
+		},
+		"ext.hydraCore.fontManager": {
+			"styles": [
+				"css/fontmanager.css"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
+			],
+			"position": "top"
+		},
+		"jquery.tablesorter2": {
+			"scripts": [
+				"js/jquery.tablesorter.js"
+			],
+			"styles": [
+				"css/tablesorter.minimal.css"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
+			],
+			"position": "bottom"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "Curse"
+	},
+	"Hooks": {
+		"GetPreferences": "HydraCoreHooks::onGetPreferences",
+		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
+		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
+		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile"
+	},
+	"ConfigRegistry": {
+		"curse": "GlobalVarConfig::newInstance"
+	},
+	"config": {
+		"CEFontPath": "/media/hydra-media/hydra/fonts",
+		"CEFontUrl": "https://hydra-media.cursecdn.local/hydra/fonts",
+		"CEFontTypes": [
+			"otf",
+			"ttc",
+			"ttf",
+			"woff"
+		]
+	},
+	"manifest_version": 1
+}

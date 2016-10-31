@@ -1,0 +1,118 @@
+a.button, input.button, span.button {
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background: none repeat-x scroll center top #212121;
+	border-color: #212121;
+	border-radius: 5px 5px 5px 5px;
+	border-style: solid;
+	border-width: 1px 1px 0;
+	box-shadow: 0 1px 0 0 #5C5C5C inset, 0 2px 3px rgba(0, 0, 0, 0.2);
+	color: #FFFFFF;
+	cursor: pointer;
+	display: inline-block;
+	font: 300 12px/30px Helvetica,Arial,sans-serif;
+	height: 30px;
+	min-width: 125px;
+	padding: 0 10px;
+	text-align: center;
+	text-shadow: 0 -1px 0 #191919;
+	text-decoration: none;
+	vertical-align: bottom;
+}
+
+a.button .legend_deleted {
+	background: none repeat scroll 0 0 pink;
+	display: inline-block;
+	float: left;
+	height: 10px;
+	margin-top: 10px;
+	margin-right: 4px;
+	width: 10px;
+}
+
+a.button .legend_default {
+	background: none repeat scroll 0 0 yellowgreen;
+	display: inline-block;
+	float: left;
+	height: 10px;
+	margin-top: 10px;
+	margin-right: 4px;
+	width: 10px;
+}
+
+.button_break {
+	border-left: 1px solid black;
+	display: inline-block;
+	height: 28px;
+	margin: 0 10px 0 8px;
+	position: relative;
+	width: 0;
+}
+
+.skin-hydradark .button_break {
+	border-color: #505050;
+}
+
+div.buttons {
+	float: right;
+	margin-bottom: 6px;
+}
+
+div.buttons form {
+	display: inline-block;
+}
+
+div.buttons fieldset {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+	line-height: 1em;
+	display: inline;
+}
+
+div.buttons form select {
+	vertical-align: bottom;
+}
+
+div.buttons input[type="submit"] {
+	height: 31px;
+	position: relative;
+	top: 1px;
+}
+
+div.buttons_popup {
+	margin-top: 6px;
+	text-align: right;
+	width: 100%;
+}
+
+.search_bar {
+	float: left;
+	margin-bottom: 6px;
+}
+
+.search_bar fieldset {
+	display: block;
+	margin: 0;
+	padding: 0;
+	border: 0 none;
+}
+
+.search_bar .search_field {
+	height: 28px;
+	padding: 0 10px;
+	margin: 0;
+	border-radius: 5px;
+	border: 1px solid #999;
+	width: 250px;
+	line-height: 28px;
+}
+
+.search_bar > form {
+	display: inline-block;
+}

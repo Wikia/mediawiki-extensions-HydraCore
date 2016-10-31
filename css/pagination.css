@@ -1,0 +1,43 @@
+.pagination {
+	display: inline-block;
+	margin-left: 0;
+	margin: 1em 0;
+}
+
+.pagination li {
+	border: 1px solid black;
+	border-radius: 2px;
+	display: inline-block;
+	font-weight: bold;
+	list-style: none inside none;
+	margin: 0 3px;
+	padding: 1px 5px;
+}
+
+.skin-hydradark .pagination li {
+	background-color: #333;
+}
+
+.pagination li.selected {
+	background-color: #ccc;
+}
+
+.pagination li.selected, .pagination li.selected a {
+	color: black;
+}
+
+.skin-hydradark .pagination li.selected {
+	background-color: #666;
+}
+
+.skin-hydradark .pagination li.selected, .skin-hydradark .pagination li.selected a {
+	color: white;
+}
+
+.pagination li:first-child {
+	margin-left: 0;
+}
+
+.pagination li:last-child {
+	margin-right: 0;
+}
