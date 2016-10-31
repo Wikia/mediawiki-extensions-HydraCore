@@ -10,7 +10,7 @@
  * @package   Dynamic Settings
  * @link      http://www.curse.com/
 **/
-namespace Curse;
+namespace HydraCore;
 
 class SpecialPage extends \SpecialPage {
 	/**
@@ -37,7 +37,7 @@ class SpecialPage extends \SpecialPage {
 	 * @return	string
 	 */
 	protected function getGroupName() {
-		return 'dynamicsettings';
+		return 'other';
 	}
 
 	// only list when we want it listed, and when user is allowed to use
