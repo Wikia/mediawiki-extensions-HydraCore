@@ -95,7 +95,7 @@
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
-		"remoteExtPath": "Curse"
+		"remoteExtPath": "HydraCore"
 	},
 	"Hooks": {
 		"GetPreferences": "HydraCoreHooks::onGetPreferences",
