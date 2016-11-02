@@ -130,13 +130,90 @@ class HydraCoreHooks {
 	 * @param	array	Existing user groups.
 	 * @return	boolean True
 	 */
-	static public function onUserEffectiveGroups(&$user, &$userGroups) {
-		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
-		$globalGroups = (array) $config->get('GlobalGroups');
+	static public function onUserEffectiveGroups(&$user, &$groups) {
+		$lookup = CentralIdLookup::factory();
+		$globalId = $lookup->centralIdFromLocalUser($user);
 
-		foreach ($userGroups as $group) {
-			if (strpos($group, "global_") === 0 && array_key_exists($group, $globalGroups)) {
-				$userGroups[] = $globalGroups[$group];
+		$redis = RedisCache::getClient('cache');
+
+		if ($globalId && $redis !== false) {
+			$globalKey = 'groups:global:globalId:'.$globalId;
+
+			try {
+				if (!$redis->exists($globalKey) && MASTER_WIKI === true && count($user->getGroups())) {
+					$redis->set($globalKey, serialize($user->getGroups()));
+					$redis->expire($globalKey, 3600);
+				} elseif (MASTER_WIKI !== true) {
+					$userGlobalGroups = unserialize($redis->get($globalKey));
+
+					if (is_array($userGlobalGroups)) {
+						$groups = array_merge($groups, $userGlobalGroups);
+					}
+				}
+			} catch (RedisException $e) {
+				wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
+			}
+		}
+
+		//Handle turning global groups into the local groups on child wikis.
+		if (MASTER_WIKI !== true) {
+			$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
+			$configGlobalGroups = (array) $config->get('GlobalGroups');
+
+			foreach ($groups as $group) {
+				//$configGlobalGroups contains "global group" => "local group" associations.  A value of false indicates the group is global, but does not have an associated local group.
+				if (array_key_exists($group, $configGlobalGroups) && $configGlobalGroups[$group] !== false) {
+					$groups[] = $configGlobalGroups[$group];
+				}
+			}
+		}
+
+		if (is_array($groups)) {
+			$groups = array_unique($groups);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Handles updating Redis cache with new user groups.
+	 *
+	 * @access	public
+	 * @param	object	User modified.
+	 * @param	array	Groups added to user.
+	 * @param	array	Groups removed from user.
+	 * @param	object	User performing the action.
+	 * @return	boolean	true
+	 */
+	static public function onUserGroupsChanged($user, $groupsAdded, $groupsRemoved, $performer) {
+		global $wgMetaNamespace;
+
+		if (MASTER_WIKI !== true) {
+			//Only the master wiki is intended to populate global groups.
+			return true;
+		}
+
+		$lookup = CentralIdLookup::factory();
+		$globalId = $lookup->centralIdFromLocalUser($user);
+
+		$redis = RedisCache::getClient('cache');
+		if (!$globalId) {
+			return true;
+		}
+
+		if ($redis !== false && count($user->getGroups())) {
+			$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
+			$configGlobalGroups = (array) $config->get('GlobalGroups');
+
+			$key = 'groups:global:globalId:'.$globalId;
+			try {
+				//Get the keys from the configured global groups and use them to limit the groups pushed into the global scope.
+				$configGlobalGroups = array_keys($configGlobalGroups);
+				$globalGroups = array_intersect($configGlobalGroups, $user->getGroups());
+				$redis->set($key, serialize($globalGroups));
+				$redis->expire($key, 3600);
+			} catch (RedisException $e) {
+				wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
 			}
 		}
 

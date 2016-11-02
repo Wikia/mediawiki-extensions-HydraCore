@@ -103,7 +103,8 @@
 		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
 		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
 		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
-		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups"
+		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
+		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged"
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
@@ -130,7 +131,8 @@
 		"GlobalGroups": {
 			"global_bot": "bot",
 			"global_bureaucrat": "bureaucrat",
-			"global_sysop": "sysop"
+			"global_sysop": "sysop",
+			"hydra_staff": false
 		}
 	},
 	"manifest_version": 1
