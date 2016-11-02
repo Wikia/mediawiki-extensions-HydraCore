@@ -26,6 +26,14 @@ class HydraCoreHooks {
 	private static $initialized = false;
 
 	/**
+	 * Global Groups Cache
+	 * Local User ID => [groups]
+	 *
+	 * @var		array
+	 */
+	private static $globalGroups = [];
+
+	/**
 	 * Initiates some needed classes.
 	 *
 	 * @access	public
@@ -135,39 +143,43 @@ class HydraCoreHooks {
 			return true;
 		}
 
-		$lookup = CentralIdLookup::factory();
-		$globalId = $lookup->centralIdFromLocalUser($user);
+		if (isset(self::$globalGroups[$user->getId()])) {
+			$groups = array_merge($groups, self::$globalGroups[$user->getId()]);
+		} else {
+			$lookup = CentralIdLookup::factory();
+			$globalId = $lookup->centralIdFromLocalUser($user);
 
-		$redis = RedisCache::getClient('cache');
+			$redis = RedisCache::getClient('cache');
 
-		if ($globalId && $redis !== false) {
-			$globalKey = 'groups:global:globalId:'.$globalId;
+			if ($globalId && $redis !== false) {
+				$globalKey = 'groups:global:globalId:'.$globalId;
 
-			try {
-				if (!$redis->exists($globalKey) && MASTER_WIKI === true && count($user->getGroups())) {
-					$redis->set($globalKey, serialize($user->getGroups()));
-					$redis->expire($globalKey, 3600);
-				} elseif (MASTER_WIKI !== true) {
-					$userGlobalGroups = unserialize($redis->get($globalKey));
+				try {
+					if (!$redis->exists($globalKey) && MASTER_WIKI === true && count($user->getGroups())) {
+						$redis->set($globalKey, serialize($user->getGroups()));
+						$redis->expire($globalKey, 3600);
+					} elseif (MASTER_WIKI !== true) {
+						$userGlobalGroups = unserialize($redis->get($globalKey));
 
-					if (is_array($userGlobalGroups)) {
-						$groups = array_merge($groups, $userGlobalGroups);
+						if (is_array($userGlobalGroups)) {
+							$groups = array_merge($groups, $userGlobalGroups);
+						}
 					}
+				} catch (RedisException $e) {
+					wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
 				}
-			} catch (RedisException $e) {
-				wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
 			}
-		}
 
-		//Handle turning global groups into the local groups on child wikis.
-		if (MASTER_WIKI !== true) {
-			$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
-			$configGlobalGroups = (array) $config->get('GlobalGroups');
+			//Handle turning global groups into the local groups on child wikis.
+			if (MASTER_WIKI !== true) {
+				$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
+				$configGlobalGroups = (array) $config->get('GlobalGroups');
 
-			foreach ($groups as $group) {
-				//$configGlobalGroups contains "global group" => "local group" associations.  A value of false indicates the group is global, but does not have an associated local group.
-				if (array_key_exists($group, $configGlobalGroups) && $configGlobalGroups[$group] !== false) {
-					$groups[] = $configGlobalGroups[$group];
+				foreach ($groups as $group) {
+					//$configGlobalGroups contains "global group" => "local group" associations.  A value of false indicates the group is global, but does not have an associated local group.
+					if (array_key_exists($group, $configGlobalGroups) && $configGlobalGroups[$group] !== false) {
+						$groups[] = $configGlobalGroups[$group];
+					}
 				}
 			}
 		}
@@ -175,6 +187,8 @@ class HydraCoreHooks {
 		if (is_array($groups)) {
 			$groups = array_unique($groups);
 		}
+
+		self::$globalGroups[$user->getId()] = $groups;
 
 		return true;
 	}
