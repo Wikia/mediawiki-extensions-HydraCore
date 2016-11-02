@@ -121,4 +121,25 @@ class HydraCoreHooks {
 
 		return true;
 	}
+
+	/**
+	 * Handles copying local rights into the global level.
+	 *
+	 * @access	public
+	 * @param	object	Mediawiki User Object
+	 * @param	array	Existing user groups.
+	 * @return	boolean True
+	 */
+	static public function onUserEffectiveGroups(&$user, &$userGroups) {
+		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
+		$globalGroups = (array) $config->get('GlobalGroups');
+
+		foreach ($userGroups as $group) {
+			if (strpos($group, "global_") === 0 && array_key_exists($group, $globalGroups)) {
+				$userGroups[] = $globalGroups[$group];
+			}
+		}
+
+		return true;
+	}
 }
