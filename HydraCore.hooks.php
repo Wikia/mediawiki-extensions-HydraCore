@@ -131,6 +131,10 @@ class HydraCoreHooks {
 	 * @return	boolean True
 	 */
 	static public function onUserEffectiveGroups(&$user, &$groups) {
+		if (!$user->getId()) {
+			return true;
+		}
+
 		$lookup = CentralIdLookup::factory();
 		$globalId = $lookup->centralIdFromLocalUser($user);
 
@@ -186,7 +190,9 @@ class HydraCoreHooks {
 	 * @return	boolean	true
 	 */
 	static public function onUserGroupsChanged($user, $groupsAdded, $groupsRemoved, $performer) {
-		global $wgMetaNamespace;
+		if (!$user->getId()) {
+			return true;
+		}
 
 		if (MASTER_WIKI !== true) {
 			//Only the master wiki is intended to populate global groups.
