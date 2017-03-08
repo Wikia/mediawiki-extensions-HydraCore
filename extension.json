@@ -57,7 +57,7 @@
 				"desktop",
 				"mobile"
 			],
-			"position": "bottom"
+			"position": "top"
 		},
 		"ext.hydraCore.font-awesome": {
 			"styles": [
