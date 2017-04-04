@@ -103,14 +103,19 @@ div.buttons_popup {
 	border: 0 none;
 }
 
-.search_bar .search_field {
-	height: 28px;
+.search_bar .search_field, .button_bar .search_field {
+	height: 30px;
 	padding: 0 10px;
 	margin: 0;
 	border-radius: 5px;
 	border: 1px solid #999;
 	width: 250px;
 	line-height: 28px;
+}
+
+.search_bar .mw-ui-input, .button_bar .mw-ui-input {
+	display: inline-block;
+	width: 250px;
 }
 
 .search_bar > form {
@@ -178,16 +183,6 @@ div.buttons.popup {
 	margin: 0;
 	padding: 0;
 	border: 0 none;
-}
-
-.button_bar .search_field {
-	height: 30px;
-	padding: 0 10px;
-	margin: 0;
-	border-radius: 5px;
-	border: 1px solid #999;
-	width: 250px;
-	line-height: 28px;
 }
 
 .button_bar > * {
