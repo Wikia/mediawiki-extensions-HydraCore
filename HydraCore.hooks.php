@@ -239,4 +239,106 @@ class HydraCoreHooks {
 
 		return true;
 	}
+
+	/**
+	 * Add hooks late so that they are ensured to come last.
+	 *
+	 * @access	public
+	 * @return	void
+	 */
+	static public function addLateHooks() {
+		global $wgHooks;
+		$wgHooks['APIAfterExecute'][] = 'HydraCoreHooks::onAPIAfterExecute';
+	}
+
+	/**
+	 * APIGetAllowedParams hook handler
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/APIGetAllowedParams
+	 * @param ApiBase $module
+	 * @param array|bool $params
+	 * @return bool
+	 */
+	public static function onAPIGetAllowedParams(ApiBase &$module, &$params) {
+		if ($module->getModuleName() == 'parse') {
+			$params['withads'] = false;
+		}
+		return true;
+	}
+
+	/**
+	 * APIGetParamDescription hook handler
+	 *
+	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/APIGetParamDescription
+	 * @param ApiBase $module
+	 * @param Array|bool $params
+	 * @return bool
+	 */
+	public static function onAPIGetParamDescription(ApiBase &$module, &$params) {
+		if ($module->getModuleName() == 'parse') {
+			$params['withads'] = 'Add advertisements to output.';
+		}
+		return true;
+	}
+
+	/**
+	 * APIGetDescription hook handler
+	 *
+	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/APIGetDescription
+	 * @param ApiBase $module
+	 * @param Array|string $desc
+	 * @return bool
+	 */
+	public static function onAPIGetDescription(ApiBase &$module, &$desc) {
+		if ($module->getModuleName() == 'parse') {
+			$desc = (array)$desc;
+			$desc[] = 'Extended by HydraCore';
+		}
+		return true;
+	}
+
+	/**
+	 * APIAfterExecute hook handler
+	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/
+	 * @param ApiBase $module
+	 * @return bool
+	 */
+	public static function onAPIAfterExecute(ApiBase &$module) {
+		if ($module->getModuleName() == 'parse') {
+			$showAds = !HydraHooks::isMobileSkin() && HydraHooks::showAds($module->getContext());
+			if (!$showAds) {
+				return true;
+			}
+
+			if (defined('ApiResult::META_CONTENT')) {
+				$data = $module->getResult()->getResultData();
+			} else {
+				$data = $module->getResultData();
+			}
+			$params = $module->extractRequestParams();
+			if (isset($data['parse']['text']) && $params['withads']) {
+				$result = $module->getResult();
+				$result->reset();
+
+				$text = $data['parse']['text'];
+				if (is_array($text)) {
+					if (defined('ApiResult::META_CONTENT') &&
+						isset($text[ApiResult::META_CONTENT])
+					) {
+						$contentKey = $text[ApiResult::META_CONTENT];
+					} else {
+						$contentKey = '*';
+					}
+					$text = $text[$contentKey];
+				} else {
+					$text = $text;
+				}
+
+				$data['parse']['text'] = HydraHooks::getAdBySlot('mobileatfmrec').$text.HydraHooks::getAdBySlot('mobilebtfmrec');
+
+				$result->addValue(null, $module->getModuleName(), $data['parse']);
+			}
+		}
+		return true;
+	}
 }

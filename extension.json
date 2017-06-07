@@ -18,6 +18,9 @@
 	"SpecialPages": {
 		"FontManager": "SpecialFontManager"
 	},
+	"APIModules": {
+		"parsewithads": "ApiParseWithAds"
+	},
 	"MessagesDirs": {
 		"HydraCore": [
 			"i18n"
@@ -97,6 +100,9 @@
 		"localBasePath": "",
 		"remoteExtPath": "HydraCore"
 	},
+	"ExtensionFunctions": [
+		"HydraCoreHooks::addLateHooks"
+	],
 	"Hooks": {
 		"GetPreferences": "HydraCoreHooks::onGetPreferences",
 		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
@@ -104,7 +110,11 @@
 		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
 		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
 		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
-		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged"
+		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged",
+		"APIGetAllowedParams": "HydraCoreHooks::onAPIGetAllowedParams",
+		"APIGetDescription": "HydraCoreHooks::onAPIGetDescription",
+		"APIGetParamDescription": "HydraCoreHooks::onAPIGetParamDescription"
+
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
