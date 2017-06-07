@@ -305,11 +305,6 @@ class HydraCoreHooks {
 	 */
 	public static function onAPIAfterExecute(ApiBase &$module) {
 		if ($module->getModuleName() == 'parse') {
-			$showAds = !HydraHooks::isMobileSkin() && HydraHooks::showAds($module->getContext(), true);
-			if (!$showAds) {
-				return true;
-			}
-
 			if (defined('ApiResult::META_CONTENT')) {
 				$data = $module->getResult()->getResultData();
 			} else {
