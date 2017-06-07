@@ -329,7 +329,7 @@ class HydraCoreHooks {
 					$text = $text;
 				}
 
-				$data['parse']['text'] = HydraHooks::getAdBySlot('mobileatfmrec').$text.HydraHooks::getAdBySlot('mobilebtfmrec');
+				$data['parse']['text'] = '<div id="mobileatfmrec">'.HydraHooks::getAdBySlot('mobileatfmrec').'</div>'.$text.'<div id="mobilebtfmrec">'.HydraHooks::getAdBySlot('mobilebtfmrec').'</div>';
 
 				$result->addValue(null, $module->getModuleName(), $data['parse']);
 			}
