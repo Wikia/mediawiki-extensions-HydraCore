@@ -18,9 +18,6 @@
 	"SpecialPages": {
 		"FontManager": "SpecialFontManager"
 	},
-	"APIModules": {
-		"parsewithads": "ApiParseWithAds"
-	},
 	"MessagesDirs": {
 		"HydraCore": [
 			"i18n"
