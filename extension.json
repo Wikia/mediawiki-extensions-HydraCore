@@ -7,6 +7,30 @@
 	"descriptionmsg": "hydracore_description",
 	"type": "other",
 	"GroupPermissions": {
+		"grasp": {
+			"blockemail": true,
+			"block": true,
+			"ipblock-exempt": true,
+			"unblockable": true,
+			"protect": true,
+			"createtalk": true,
+			"createpage": true,
+			"delete": true,
+			"editinterface": true,
+			"autopatrol": true,
+			"nuke": true,
+			"movefile": true,
+			"move": true,
+			"move-subpages": true,
+			"noratelimit": true,
+			"reupload-shared": true,
+			"reupload": true,
+			"rollback": true,
+			"undelete": true,
+			"deletedhistory": true,
+			"deletedtext": true,
+			"clearuserprofile": true
+		},
 		"sysop": {
 			"font_manager": true
 		}
