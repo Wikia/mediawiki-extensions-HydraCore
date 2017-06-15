@@ -17,9 +17,10 @@ class TemplatePagination {
 	 *
 	 * @access	public
 	 * @param	array	Array of pagination information.
+	 * @param	string	[Optional] Base URL to use.
 	 * @return	string	Built HTML
 	 */
-	public function pagination($pagination) {
+	public function pagination($pagination, $baseUrl = null) {
 		$extra = '';
 		if (!empty($pagination['extra'])) {
 			$extra = '&'.$pagination['extra'];
@@ -34,15 +35,15 @@ $HTML .= "
 
 			if (count($pagination['pages']) > 1) {
 				if ($pagination['first']) {
-					$HTML .= "<li><a href='?st={$pagination['first']['st']}{$extra}'>&laquo;</a></li>";
+					$HTML .= "<li><a href='{$baseUrl}?st={$pagination['first']['st']}{$extra}'>&laquo;</a></li>";
 				}
 				foreach ($pagination['pages'] as $page => $info) {
 					if ($page > 0) {
-						$HTML .= "<li".($info['selected'] ? " class='selected'" : null)."><a href='?st={$info['st']}{$extra}'>{$page}</a></li>";
+						$HTML .= "<li".($info['selected'] ? " class='selected'" : null)."><a href='{$baseUrl}?st={$info['st']}{$extra}'>{$page}</a></li>";
 					}
 				}
 				if ($pagination['last']) {
-					$HTML .= "<li><a href='?st={$pagination['last']['st']}{$extra}'>&raquo;</a></li>";
+					$HTML .= "<li><a href='{$baseUrl}?st={$pagination['last']['st']}{$extra}'>&raquo;</a></li>";
 				}
 			}
 $HTML .= "
