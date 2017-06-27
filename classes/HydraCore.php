@@ -194,4 +194,41 @@ class HydraCore {
 	static public function isMobileSkin(Skin $skin) {
 		return $skin->getSkinName() == 'minerva';
 	}
+
+	/**
+	 * Get the wiki image set in Mercury for a given wiki site key.
+	 *
+	 * @access	public
+	 * @param	string	Site Key
+	 * @return	string	String Image URL.
+	 */
+	static public function getWikiImageUrlFromMercury($siteKey) {
+		global $wgScriptPath;
+
+		$redis = \RedisCache::getClient('cache');
+		$redisKey = 'wikiavatar:'.$siteKey;
+
+		if (!empty($siteKey)) {
+			// Try to use a cached value from Redis.
+			if ($redis !== false) {
+				$existUrl = $redis->get($redisKey);
+				if (!empty($existUrl)) {
+					return $existUrl;
+				}
+			}
+
+			// fallback to direct lookup from the gamepedia.com api
+			$result = \Http::post('http://www.gamepedia.com/api/get-avatar?apikey=***REMOVED***&wikiMd5='.urlencode($siteKey));
+			$json = json_decode($result, true);
+			if (!empty($json) && isset($json['AvatarUrl'])) {
+				$json['AvatarUrl'] = str_replace('http://', 'https://', $json['AvatarUrl']); //Not a clean fix for this, but it works.
+				//Cache to Redis.
+				if ($redis !== false) {
+					$redis->setEx($redisKey, 86400, $json['AvatarUrl']); //Expire in twenty-four hours.
+				}
+				return $json['AvatarUrl'];
+			}
+		}
+		return $wgScriptPath.'/extensions/HydraCore/images/wikiplaceholder.png';
+	}
 }
