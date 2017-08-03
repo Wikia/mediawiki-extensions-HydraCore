@@ -81,7 +81,9 @@ abstract class HydraApiBase extends ApiBase {
 	}
 
 	private function getPermissionRequired() {
-		$perm = $this->getActions()[$this->getMain()->getVal('do')]['permissionRequired'];
+		$actions = $this->getActions();
+		$perm = isset($actions[$this->getMain()->getVal('do')]['permissionRequired']) ? $actions[$this->getMain()->getVal('do')]['permissionRequired'] : '';
+
 		return (strlen($perm) ? $perm : false);
 	}
 
