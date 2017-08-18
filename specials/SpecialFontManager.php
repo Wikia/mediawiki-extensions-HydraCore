@@ -76,6 +76,7 @@ class SpecialFontManager extends SpecialPage {
 
 		$fontFolder = dir($ceFontPath);
 
+		$upload = null;
 		if ($this->wgRequest->getVal('action') == 'upload') {
 			if (!$this->wgUser->isAllowed('font_upload')) {
 				throw new PermissionsError('font_upload');
@@ -84,6 +85,7 @@ class SpecialFontManager extends SpecialPage {
 			$upload = $this->fontManagerUpload();
 		}
 
+		$fonts = [];
 		if ($fontFolder !== false) {
 			while (($file = $fontFolder->read()) !== false) {
 				if ($file == '.' || $file == '..') {

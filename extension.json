@@ -141,8 +141,8 @@
 		"hydracore": "GlobalVarConfig::newInstance"
 	},
 	"config": {
-		"CEFontPath": "/media/hydra-media/hydra/fonts",
-		"CEFontUrl": "https://hydra-media.cursecdn.local/hydra/fonts",
+		"CEFontPath": "media/hydra/fonts",
+		"CEFontUrl": "/media/hydra/fonts",
 		"CEFontTypes": [
 			"otf",
 			"ttc",

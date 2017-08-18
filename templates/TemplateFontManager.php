@@ -27,16 +27,18 @@ class TemplateFontManager {
 		$fontManagerPage = Title::newFromText('Special:FontManager');
 		$fontManagerURL = $fontManagerPage->getFullURL();
 
+		$html = '';
+
 		if ($upload !== null) {
 			if ($upload === true) {
-				$HTML .= "<div class='successbox'>".wfMessage('font_uploaded')->escaped()."</div>";
+				$html .= "<div class='successbox'>".wfMessage('font_uploaded')->escaped()."</div>";
 			} else {
-				$HTML .= "<div class='errorbox'>".wfMessage('font_not_uploaded')->escaped()."</div>";
+				$html .= "<div class='errorbox'>".wfMessage('font_not_uploaded')->escaped()."</div>";
 			}
 		}
 
 		if ($wgUser->isAllowed('font_upload')) {
-			$HTML .= "
+			$html .= "
 		<div class='font_upload'>
 			<form id='font_upload' method='post' action='{$fontManagerURL}?action=upload' enctype='multipart/form-data'>
 				<fieldset>
@@ -50,7 +52,7 @@ class TemplateFontManager {
 		}
 		if (count($fonts)) {
 			foreach ($fonts as $font) {
-				$HTML .= "
+				$html .= "
 			<div id='font_".md5($font->getFileName())."' class='font_block'>
 				<style type='text/css'>
 {$font->getCSS()['font_face']}
@@ -71,6 +73,6 @@ class TemplateFontManager {
 			}
 		}
 
-		return $HTML;
+		return $html;
 	}
 }
