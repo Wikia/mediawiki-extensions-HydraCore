@@ -149,10 +149,6 @@ div.buttons_popup {
 	background: none repeat scroll 0 0 burlywood;
 }
 
-div.buttons.primary_right .mw-ui-button.mw-ui-constructive {
-	float: right;
-}
-
 div.buttons.all_right {
 	float: right;
 }
