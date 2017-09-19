@@ -155,10 +155,10 @@ class HydraCoreHooks {
 				$globalKey = 'groups:global:globalId:'.$globalId;
 
 				try {
-					if (!$redis->exists($globalKey) && MASTER_WIKI === true && count($user->getGroups())) {
+					if (!$redis->exists($globalKey) && defined('MASTER_WIKI') && MASTER_WIKI === true && count($user->getGroups())) {
 						$redis->set($globalKey, serialize($user->getGroups()));
 						$redis->expire($globalKey, 3600);
-					} elseif (MASTER_WIKI !== true) {
+					} elseif (!defined('MASTER_WIKI') || MASTER_WIKI !== true) {
 						$userGlobalGroups = unserialize($redis->get($globalKey));
 
 						if (is_array($userGlobalGroups)) {
@@ -171,7 +171,7 @@ class HydraCoreHooks {
 			}
 
 			//Handle turning global groups into the local groups on child wikis.
-			if (MASTER_WIKI !== true) {
+			if (!defined('MASTER_WIKI') || MASTER_WIKI !== true) {
 				$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 				$configGlobalGroups = (array) $config->get('GlobalGroups');
 
@@ -208,7 +208,7 @@ class HydraCoreHooks {
 			return true;
 		}
 
-		if (MASTER_WIKI !== true) {
+		if (!defined('MASTER_WIKI') || MASTER_WIKI !== true) {
 			//Only the master wiki is intended to populate global groups.
 			return true;
 		}
