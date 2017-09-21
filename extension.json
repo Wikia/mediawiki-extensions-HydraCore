@@ -19,6 +19,7 @@
 			"deletedtext": true,
 			"editinterface": true,
 			"ipblock-exempt": true,
+			"globalblock": true,
 			"move": true,
 			"move-subpages": true,
 			"movefile": true,
