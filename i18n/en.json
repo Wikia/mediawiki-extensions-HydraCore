@@ -66,6 +66,9 @@
 	"group-ads_manager": "Advertisement Managers",
 	"group-ads_manager-member": "{{GENDER:$1|advertisement manager}}",
 	"grouppage-ads_manager": "{{ns:project}}:Advertisement Managers",
+	"group-promo_manager": "Promotion Managers",
+	"group-promo_manager-member": "{{GENDER:$1|promotion manager}}",
+	"grouppage-promo_manager": "{{ns:project}}:Promotion Managers",
 	"group-grasp": "GRASP",
 	"group-grasp-member": "{{GENDER:$1|Gamepedia Rapid Anti-Spam Patrol (GRASP)}}",
 	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol"
