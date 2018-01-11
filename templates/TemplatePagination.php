@@ -17,39 +17,39 @@ class TemplatePagination {
 	 *
 	 * @access	public
 	 * @param	array	Array of pagination information.
-	 * @param	string	[Optional] Base URL to use.
+	 * @param	object	Page Title
 	 * @return	string	Built HTML
 	 */
-	public function pagination($pagination, $baseUrl = null) {
-		$extra = '';
+	public function pagination($pagination, Title $title) {
+		$arguments = [];
 		if (!empty($pagination['extra'])) {
-			$extra = '&'.$pagination['extra'];
+			$arguments = $pagination['extra'];
 		}
-		$HTML = '';
+		$html = '';
 		if (isset($pagination['pages']) && count($pagination['pages'])) {
-$HTML .= "
-	<ul class='pagination'>";
+			$html .= "
+		<ul class='pagination'>";
 			if (isset($pagination['stats'])) {
-				$HTML .= "<li class='pagination_stats'>Page {$pagination['stats']['current_page']} of {$pagination['stats']['pages']}</li>";
+				$html .= "<li class='pagination_stats'>Page {$pagination['stats']['current_page']} of {$pagination['stats']['pages']}</li>";
 			}
 
 			if (count($pagination['pages']) > 1) {
 				if ($pagination['first']) {
-					$HTML .= "<li><a href='{$baseUrl}?st={$pagination['first']['st']}{$extra}'>&laquo;</a></li>";
+					$html .= "<li><a href='{$title->getFullURL($arguments + ['st' => $pagination['first']['st']])}'>&laquo;</a></li>";
 				}
 				foreach ($pagination['pages'] as $page => $info) {
 					if ($page > 0) {
-						$HTML .= "<li".($info['selected'] ? " class='selected'" : null)."><a href='{$baseUrl}?st={$info['st']}{$extra}'>{$page}</a></li>";
+						$html .= "<li".($info['selected'] ? " class='selected'" : null)."><a href='{$title->getFullURL($arguments + ['st' => $info['st']])}'>{$page}</a></li>";
 					}
 				}
 				if ($pagination['last']) {
-					$HTML .= "<li><a href='{$baseUrl}?st={$pagination['last']['st']}{$extra}'>&raquo;</a></li>";
+					$html .= "<li><a href='{$title->getFullURL($arguments + ['st' => $pagination['last']['st']])}'>&raquo;</a></li>";
 				}
 			}
-$HTML .= "
-	</ul>";
+			$html .= "
+		</ul>";
 		}
 
-		return $HTML;
+		return $html;
 	}
 }

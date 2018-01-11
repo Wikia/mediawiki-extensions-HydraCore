@@ -172,15 +172,15 @@ class HydraCore {
 	 * @param	integer	[Optional] How many items to display per page.
 	 * @param	integer	[Optional] Start Position
 	 * @param	integer	[Optional] Number of extra page numbers to show.
-	 * @param	string	[Optional] Extra URL arguments to append to pagination URLs.  Do not prefix with an & symbol.
+	 * @param	array	[Optional] Array of extra URL arguments to append to pagination URLs.
 	 * @param	string	[Optional] Base URL to use.
 	 * @return	string	Built Pagination HTML
 	 */
-	static public function generatePaginationHtml($totalItems, $itemsPerPage = 100, $itemStart = 0, $extraPages = 4, $extraArguments = null, $baseUrl = null) {
+	static public function generatePaginationHtml(Title $title, $totalItems, $itemsPerPage = 100, $itemStart = 0, $extraPages = 4, $extraArguments = []) {
 		$pagination = self::generatePagination($totalItems, $itemsPerPage, $itemStart, $extraPages);
 		$pagination['extra'] = $extraArguments;
 		$templates = new TemplatePagination;
-		$html = $templates->pagination($pagination, $baseUrl);
+		$html = $templates->pagination($pagination, $title);
 
 		return $html;
 	}
