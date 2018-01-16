@@ -65,7 +65,6 @@ class SpecialFontManager extends SpecialPage {
 	 * @return	void	[Outputs to screen]
 	 */
 	public function fontManagerPage() {
-
 		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 		$ceFontPath = $config->get('CEFontPath');
 
@@ -110,7 +109,6 @@ class SpecialFontManager extends SpecialPage {
 	 * @return	boolean	Successful Upload
 	 */
 	public function fontManagerUpload() {
-
 		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 		$ceFontPath = $config->get('CEFontPath');
 
@@ -118,7 +116,7 @@ class SpecialFontManager extends SpecialPage {
 
 		$file = $this->wgRequest->getUpload('font_file');
 
-		if ($file instanceOf WebRequestUpload) {
+		if ($file instanceof WebRequestUpload) {
 			$_font = \HydraCore\Font::loadFromFile($file->getName(), $file->getTempName());
 
 			if ($_font !== false) {
