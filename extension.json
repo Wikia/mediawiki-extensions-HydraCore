@@ -8,6 +8,7 @@
 	"type": "other",
 	"GroupPermissions": {
 		"grasp": {
+			"abusefilter-view": true,
 			"autopatrol": true,
 			"block": true,
 			"blockemail": true,
@@ -26,6 +27,7 @@
 			"noratelimit": true,
 			"nuke": true,
 			"patrol": true,
+			"profile-moderate": true,
 			"protect": true,
 			"reupload": true,
 			"reupload-shared": true,
