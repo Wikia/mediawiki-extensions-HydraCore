@@ -213,6 +213,13 @@ class HydraCoreHooks {
 			return true;
 		}
 
+		//Don't allow non-bureaucrats to add bureaucrat to an user.
+		if (in_array('bureaucrat', $groupsAdded)) {
+			if (!in_array('bureaucrat', $performer->getGroups())) {
+				$user->removeGroup('bureaucrat');
+			}
+		}
+
 		$lookup = CentralIdLookup::factory();
 		$globalId = $lookup->centralIdFromLocalUser($user);
 
