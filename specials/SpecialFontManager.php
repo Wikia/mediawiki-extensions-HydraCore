@@ -68,7 +68,6 @@ class SpecialFontManager extends SpecialPage {
 		$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 		$ceFontPath = $config->get('CEFontPath');
 
-
 		if (!is_dir($ceFontPath)) {
 			throw new MWException(__METHOD__.": The font path is not set or the directory does not exist.  This must be set and exist before using the font manager.");
 		}
@@ -93,7 +92,7 @@ class SpecialFontManager extends SpecialPage {
 				$_font = \HydraCore\Font::loadFromFile($file, $ceFontPath.DIRECTORY_SEPARATOR.$file);
 
 				if ($_font !== false) {
-					$fonts[$_font->getName()] = $_font;
+					$fonts[$_font->getFileName()] = $_font;
 				}
 			}
 		}
