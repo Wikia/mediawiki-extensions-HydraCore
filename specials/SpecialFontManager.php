@@ -93,10 +93,11 @@ class SpecialFontManager extends SpecialPage {
 				$_font = \HydraCore\Font::loadFromFile($file, $ceFontPath.DIRECTORY_SEPARATOR.$file);
 
 				if ($_font !== false) {
-					$fonts[] = $_font;
+					$fonts[$_font->getName()] = $_font;
 				}
 			}
 		}
+		ksort($fonts);
 
 		$this->output->setPageTitle(wfMessage('fontmanager'));
 		$this->content = $this->templates->fontManagerPage($fonts, $upload);
