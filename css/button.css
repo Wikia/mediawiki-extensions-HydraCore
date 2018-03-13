@@ -51,33 +51,6 @@ div.buttons_popup {
 	width: 100%;
 }
 
-.search_bar {
-	float: left;
-	margin-bottom: 6px;
-}
-
-.search_bar fieldset {
-	display: block;
-	margin: 0;
-	padding: 0;
-	border: 0 none;
-}
-
-.search_bar .search_field, .button_bar .search_field {
-	height: 30px;
-	padding: 0 10px;
-	margin: 0;
-	border-radius: 5px;
-	border: 1px solid #999;
-	width: 250px;
-	line-height: 28px;
-}
-
-.search_bar .mw-ui-input, .button_bar .mw-ui-input {
-	display: inline-block;
-	width: 250px;
-}
-
 .mw-ui-button.with_legend > span:first-child {
 	background: none repeat scroll 0 0 black;
 	display: inline-block;
@@ -133,6 +106,21 @@ div.buttons.popup {
 	flex: 0 1 auto;
 	align-self: auto;
 	margin: auto 0 auto 1em;
+}
+
+.button_bar .search_field {
+	height: 30px;
+	padding: 0 10px;
+	margin: 0;
+	border-radius: 5px;
+	border: 1px solid #999;
+	width: 250px;
+	line-height: 28px;
+}
+
+.button_bar .mw-ui-input {
+	display: inline-block;
+	width: 250px;
 }
 
 .button_bar form {
