@@ -45,46 +45,6 @@ a.button .legend_default {
 	width: 10px;
 }
 
-.button_break {
-	border-left: 1px solid black;
-	display: inline-block;
-	height: 28px;
-	margin: 0 10px 0 8px;
-	position: relative;
-	width: 0;
-}
-
-.skin-hydradark .button_break {
-	border-color: #505050;
-}
-
-div.buttons {
-	float: right;
-	margin-bottom: 6px;
-}
-
-div.buttons form {
-	display: inline-block;
-}
-
-div.buttons fieldset {
-	border: 0px;
-	margin: 0px;
-	padding: 0px;
-	line-height: 1em;
-	display: inline;
-}
-
-div.buttons form select {
-	vertical-align: bottom;
-}
-
-div.buttons input[type="submit"] {
-	height: 31px;
-	position: relative;
-	top: 1px;
-}
-
 div.buttons_popup {
 	margin-top: 6px;
 	text-align: right;
@@ -118,14 +78,6 @@ div.buttons_popup {
 	width: 250px;
 }
 
-.search_bar > form {
-	display: inline-block;
-}
-
-.buttons > * {
-	display: inline-block;
-}
-
 .mw-ui-button.with_legend > span:first-child {
 	background: none repeat scroll 0 0 black;
 	display: inline-block;
@@ -149,29 +101,42 @@ div.buttons_popup {
 	background: none repeat scroll 0 0 burlywood;
 }
 
-div.buttons.all_right {
-	float: right;
-}
-
 div.buttons.popup {
 	margin-bottom: 0;
 }
 
-.button_break {
-	border-left: 1px solid #333;
-	display: inline;
-	height: 100%;
-	margin: 0 10px 0 8px;
-	padding: 8px 0;
-	width: 10px;
-}
-
-.skin-hydradark .button_break {
-	border-color: #505050;
-}
-
 .button_bar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-content: stretch;
+	align-items: flex-start;
 	margin-bottom: 10px;
+}
+
+.button_bar .buttons_left {
+	order: 0;
+	flex: 0 1 auto;
+	align-self: auto;
+	margin: auto 1em auto 0;
+}
+
+.button_bar .button_break {
+	order: 0;
+	flex: 1 1 auto;
+	align-self: auto;
+}
+
+.button_bar .buttons_right {
+	order: 0;
+	flex: 0 1 auto;
+	align-self: auto;
+	margin: auto 0 auto 1em;
+}
+
+.button_bar form {
+	display: inline-block;
 }
 
 .button_bar fieldset {
@@ -179,11 +144,6 @@ div.buttons.popup {
 	margin: 0;
 	padding: 0;
 	border: 0 none;
-}
-
-.button_bar > * {
-	display: inline;
-	margin-bottom: 10px;
 }
 
 .button_bar a.mw-ui-button {
