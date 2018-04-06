@@ -49,7 +49,7 @@ class SpecialFontManager extends SpecialPage {
 
 		$this->templates = new TemplateFontManager;
 
-		$this->output->addModules('ext.hydraCore.fontManager.styles');
+		$this->output->addModuleStyles(['ext.hydraCore.fontManager.styles']);
 
 		$this->setHeaders();
 
