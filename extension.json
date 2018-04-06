@@ -67,7 +67,7 @@
 		"TemplatePagination": "templates/TemplatePagination.php"
 	},
 	"ResourceModules": {
-		"ext.hydraCore.pagination": {
+		"ext.hydraCore.pagination.styles": {
 			"targets": [
 				"desktop",
 				"mobile"
@@ -77,7 +77,7 @@
 			],
 			"position": "bottom"
 		},
-		"ext.hydraCore.button": {
+		"ext.hydraCore.button.styles": {
 			"styles": [
 				"css/button.css"
 			],
@@ -87,7 +87,7 @@
 			],
 			"position": "top"
 		},
-		"ext.hydraCore.font-awesome": {
+		"ext.hydraCore.font-awesome.styles": {
 			"styles": [
 				"css/font-awesome/font-awesome.less"
 			],
@@ -97,7 +97,7 @@
 			],
 			"position": "bottom"
 		},
-		"ext.hydraCore.fontManager": {
+		"ext.hydraCore.fontManager.styles": {
 			"styles": [
 				"css/fontmanager.css"
 			],

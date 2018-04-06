@@ -85,7 +85,7 @@ class HydraCore {
 	/**
 	 * Returns an HTML fragment to display an icon from Font Awesome.
 	 * Find an icon you like http://fortawesome.github.io/Font-Awesome/icons/ then pass its name to this fuction.
-	 * Icons will only display when the module "ext.hydraCore.font-awesome" is included on the page.
+	 * Icons will only display when the module "ext.hydraCore.font-awesome.styles" is included on the page.
 	 *
 	 * @param string  name of the icon to use
 	 * @param array   extra classes to add to the element
