@@ -148,7 +148,9 @@
 		"CEFontPath": "media/hydra/fonts",
 		"CEFontUrl": "/media/hydra/fonts",
 		"CEFontTypes": [
+			"eot",
 			"otf",
+			"svg",
 			"ttc",
 			"ttf",
 			"woff"
