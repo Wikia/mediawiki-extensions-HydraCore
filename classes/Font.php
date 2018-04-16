@@ -148,7 +148,7 @@ class Font {
 	 * Return the format string for this font file type.
 	 *
 	 * @access	public
-	 * @return	void
+	 * @return	string	File Format
 	 */
 	public function getFormat() {
 		$formats = [
@@ -158,14 +158,14 @@ class Font {
 			'eot'	=> 'embedded-opentype',
 			'svg'	=> 'svg'
 		];
-		return (array_key_exists($this->getFileType(), $formats) ? $formats[$this->getFileType()]: $this->getFileType());
+		return (array_key_exists($this->getFileType(), $formats) ? $formats[$this->getFileType()] : $this->getFileType());
 	}
 
 	/**
 	 * Return the URL to the font file.
 	 *
 	 * @access	public
-	 * @return	void
+	 * @return	string	Font URL
 	 */
 	public function getUrl() {
 
@@ -175,15 +175,15 @@ class Font {
 	}
 
 	/**
-	 * Function Documentation
+	 * Get embed CSS for this font.
 	 *
 	 * @access	public
-	 * @return	void
+	 * @return	string	CSS
 	 */
 	public function getCSS() {
 		$css['font_face'] = "@font-face {
 	font-family: '{$this->getName()}';
-	src: local('{$this->getName()}'), local('".str_replace(' ', '-', $this->getName())."'), url({$this->getUrl()}) format('{$this->getFormat()}');
+	src: local('{$this->getName()}'), local('".str_replace(' ', '-', $this->getName())."'), url('{$this->getUrl()}') format('{$this->getFormat()}');
 }";
 		$css['style'] = 'font-family: "'.$this->getName().'";';
 
