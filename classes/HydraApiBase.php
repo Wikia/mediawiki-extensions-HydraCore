@@ -45,8 +45,35 @@ abstract class HydraApiBase extends ApiBase {
 		];
 	}
 
+	/**
+	 * Add links for valid do params to help page.
+	 *
+	 * @return array
+	 */
+	public function getDoLinks() {
+		$module = $this->getMain()->getVal('modules');
+		$dos = array_keys($this->getActions());
+		$links = [];
+
+		array_map(function ($do) use (&$links, $module) {
+			$link = wfExpandUrl('/api.php?action=help&modules=' . $module . '&do=' . $do);
+			$links[] = '[' . $link . ' ' . $do . ']';
+		}, $dos);
+
+		return ['do' => [
+			ApiBase::PARAM_TYPE => 'string',
+			ApiBase::PARAM_REQUIRED => true,
+			ApiBase::PARAM_HELP_MSG => $this->msg('hydra-apihelp-do-links', implode(', ', $links)),
+		]];
+	}
+
 	public function getAllowedParams() {
 		$do = $this->getMain()->getVal('do');
+		$action = $this->getMain()->getVal('action');
+
+		if ($action == 'help' && empty($do)) {
+			return $this->getDoLinks();
+		}
 
 		$childParams = $this->getActions()[$do]['params'];
 
@@ -69,11 +96,17 @@ abstract class HydraApiBase extends ApiBase {
 	}
 
 	public function mustBePosted() {
-		return $this->getActions()[$this->getMain()->getVal('do')]['postRequired'];
+		$do = $this->getMain()->getVal('do');
+		if ($do) {
+			return $this->getActions()[$this->getMain()->getVal('do')]['postRequired'];
+		}
 	}
 
 	public function needsToken() {
-		return $this->getActions()[$this->getMain()->getVal('do')]['tokenRequired'] ? "csrf" : false;
+		$do = $this->getMain()->getVal('do');
+		if ($do) {
+			return $this->getActions()[$this->getMain()->getVal('do')]['tokenRequired'] ? "csrf" : false;
+		}
 	}
 
 	public function getTokenSalt() {

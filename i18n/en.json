@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": ["Alexia E. Smith"]
+		"authors": [
+			"Alexia E. Smith"
+		]
 	},
 	"hydracore_description": "Core functionality for Hydra Wiki Platform extensions.",
 	"fox": "The Quick '''Brown Fox''' Jumps Over The ''Lazy Dog''",
@@ -71,5 +73,6 @@
 	"grouppage-promo_manager": "{{ns:project}}:Promotion Managers",
 	"group-grasp": "GRASP",
 	"group-grasp-member": "{{GENDER:$1|Gamepedia Rapid Anti-Spam Patrol (GRASP)}}",
-	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol"
+	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol",
+	"hydra-apihelp-do-links": "Possible values for do:\n\n$1"
 }
