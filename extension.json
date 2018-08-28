@@ -9,6 +9,9 @@
 	"GroupPermissions": {
 		"grasp": {
 			"abusefilter-view": true,
+			"abusefilter-log": true,
+			"abusefilter-log-view": true,
+			"abusefilter-private": true,
 			"autopatrol": true,
 			"block": true,
 			"blockemail": true,
