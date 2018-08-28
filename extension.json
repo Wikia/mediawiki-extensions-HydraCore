@@ -32,7 +32,7 @@
 			"reupload": true,
 			"reupload-shared": true,
 			"rollback": true,
-			"unblockable": true,
+			"unblockself": true,
 			"undelete": true
 		},
 		"sysop": {
