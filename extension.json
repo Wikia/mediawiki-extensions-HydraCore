@@ -92,7 +92,7 @@
 		},
 		"ext.hydraCore.font-awesome.styles": {
 			"styles": [
-				"css/font-awesome/font-awesome.less"
+				"css/fontawesome/all.min.css"
 			],
 			"targets": [
 				"desktop",
