@@ -12,10 +12,7 @@
  *
 **/
 
-if (!defined('MEDIAWIKI')) {
-	echo("This is an extension to the MediaWiki software and is not a valid entry point.\n");
-	die(-1);
-}
+use DynamicSettings\Environment;
 
 class HydraCoreHooks {
 	/**
@@ -117,7 +114,7 @@ class HydraCoreHooks {
 	 * @return	boolean Whether or not to add the group.
 	 */
 	static public function onUserAddGroup($user, &$group) {
-		if (defined('MASTER_WIKI') && MASTER_WIKI === true) {
+		if (Environment::isMasterWiki()) {
 			return true;
 		}
 
@@ -155,10 +152,10 @@ class HydraCoreHooks {
 				$globalKey = 'groups:global:globalId:'.$globalId;
 
 				try {
-					if (!$redis->exists($globalKey) && defined('MASTER_WIKI') && MASTER_WIKI === true && count($user->getGroups())) {
+					if (!$redis->exists($globalKey) && Environment::isMasterWiki() && count($user->getGroups())) {
 						$redis->set($globalKey, serialize($user->getGroups()));
 						$redis->expire($globalKey, 3600);
-					} elseif (!defined('MASTER_WIKI') || MASTER_WIKI !== true) {
+					} elseif (!Environment::isMasterWiki()) {
 						$userGlobalGroups = unserialize($redis->get($globalKey));
 
 						if (is_array($userGlobalGroups)) {
@@ -171,7 +168,7 @@ class HydraCoreHooks {
 			}
 
 			//Handle turning global groups into the local groups on child wikis.
-			if (!defined('MASTER_WIKI') || MASTER_WIKI !== true) {
+			if (!Environment::isMasterWiki()) {
 				$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 				$configGlobalGroups = (array) $config->get('GlobalGroups');
 
@@ -208,7 +205,7 @@ class HydraCoreHooks {
 			return true;
 		}
 
-		if (!defined('MASTER_WIKI') || MASTER_WIKI !== true) {
+		if (!Environment::isMasterWiki()) {
 			//Only the master wiki is intended to populate global groups.
 			return true;
 		}
