@@ -10,6 +10,9 @@
 		"grasp": {
 			"abusefilter-view": true,
 			"abusefilter-log": true,
+			"abusefilter-log-detail": true,
+			"abusefilter-modify": true,
+			"abusefilter-modify-restricted": true,
 			"abusefilter-log-view": true,
 			"abusefilter-private": true,
 			"autopatrol": true,
