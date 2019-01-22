@@ -92,7 +92,7 @@ class fixSearchIndex extends Maintenance {
 		}
 		if ($forceIndex) {
 			$this->output("-------------------------------\nFORCE SEARCH INDEX!\n-------------------------------\n");
-			$baseCommand = "php ".__DIR__."/hostHelper.php ".escapeshellarg($domain)." ".dirname(dirname(__DIR__))."/CirrusSearch/maintenance/forceSearchIndex.php --queue --maxJobs 3 2>&1";
+			$baseCommand = "php ".__DIR__."/hostHelper.php ".escapeshellarg($domain)." ".dirname(__DIR__, 2)."/CirrusSearch/maintenance/forceSearchIndex.php --queue --maxJobs 3 2>&1";
 			$output = shell_exec($baseCommand);
 			$this->output($output);
 		}
@@ -107,7 +107,7 @@ class fixSearchIndex extends Maintenance {
 	 * @return	string	Command Output
 	 */
 	private function runAndGetOutput($domain, $extra = '') {
-		$baseCommand = "php ".__DIR__."/hostHelper.php ".escapeshellarg($domain)." ".dirname(dirname(__DIR__))."/CirrusSearch/maintenance/updateSearchIndexConfig.php".(!empty($extra) ? ' '.$extra : '')." 2>&1";
+		$baseCommand = "php ".__DIR__."/hostHelper.php ".escapeshellarg($domain)." ".dirname(__DIR__, 2)."/CirrusSearch/maintenance/updateSearchIndexConfig.php".(!empty($extra) ? ' '.$extra : '')." 2>&1";
 		$this->output($baseCommand."\n");
 
 		return shell_exec($baseCommand);
