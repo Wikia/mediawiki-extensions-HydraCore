@@ -40,7 +40,7 @@ if (strpos($host, '.local') == strlen($host) - 6 && $_SERVER['PHP_ENV'] === 'liv
 }
 
 $found = false;
-if (file_exists(dirname(dirname(dirname(__DIR__))).'/sites/'.$host.'/LocalSettings.php')) {
+if (file_exists(dirname(__DIR__, 3).'/sites/'.$host.'/LocalSettings.php')) {
 	$found = true;
 }
 

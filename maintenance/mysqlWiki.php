@@ -4,9 +4,9 @@ $domain = isset($argv[1]) ? trim($argv[1]) : null;
 define('MEDIAWIKI', true);
 define('SETTINGS_ONLY', true);
 if (empty($domain)) {
-	$settings = dirname(dirname(dirname(__DIR__)))."/LocalSettings.php";
+	$settings = dirname(__DIR__, 3)."/LocalSettings.php";
 } else {
-	$settings = dirname(dirname(dirname(__DIR__)))."/sites/{$domain}/LocalSettings.php";
+	$settings = dirname(__DIR__, 3)."/sites/{$domain}/LocalSettings.php";
 }
 @require($settings);
 if (empty($wgDBserver)) {
