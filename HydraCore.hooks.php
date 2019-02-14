@@ -6,9 +6,9 @@
  *
  * @author		Telshin
  * @copyright	(c) 2012 Curse Inc.
- * @license		All Rights Reserved
+ * @license		GNU General Public License v2.0 or later
  * @package		HydraCore
- * @link		http://www.curse.com/
+ * @link		https://gitlab.com/hydrawiki
  *
 **/
 

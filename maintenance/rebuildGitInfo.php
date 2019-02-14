@@ -3,9 +3,9 @@
  * Rebuilt Git Info Maintenance Script
  *
  * @author 		Alexia E. Smith
- * @copyright	(c) 2018 Curse Media
- * @license		All Rights Reserved
- * @link		https://www.curse.com/
+ * @copyright	(c) 2018 Curse Inc.
+ * @license		GNU General Public License v2.0 or later
+ * @link		https://gitlab.com/hydrawiki
 **/
 
 require_once(dirname(__DIR__, 3).'/maintenance/Maintenance.php');

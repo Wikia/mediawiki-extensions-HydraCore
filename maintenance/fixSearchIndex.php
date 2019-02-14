@@ -4,8 +4,8 @@
  *
  * @author 		Alexia E. Smith
  * @copyright	(c) 2017 Curse Inc.
- * @license		All Rights Reserved
- * @link		http://www.curse.com/
+ * @license		GNU General Public License v2.0 or later
+ * @link		https://gitlab.com/hydrawiki
  *
 **/
 

@@ -1,11 +1,18 @@
 {
 	"name": "HydraCore",
-	"version": "3.0",
+	"version": "3.0.0",
 	"author": [
-		"Wiki Platform Team"
+		"Hydra Wiki Platform Team"
 	],
+	"license-name": "GPL-2.0-or-later",
 	"descriptionmsg": "hydracore_description",
 	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.29.0",
+		"extensions": {
+			"DynamicSettings": ">= 3.0.0"
+		}
+	},
 	"GroupPermissions": {
 		"grasp": {
 			"abusefilter-view": true,

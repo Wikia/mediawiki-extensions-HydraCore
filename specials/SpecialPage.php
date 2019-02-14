@@ -5,10 +5,10 @@
  * Generic Special Page
  *
  * @author    Noah Manneschmidt
- * @copyright (c) 2015 Curse Inc.
- * @license   All Rights Reserved
+ * @copyright	(c) 2015 Curse Inc.
+ * @license		GNU General Public License v2.0 or later
  * @package   Dynamic Settings
- * @link      http://www.curse.com/
+ * @link      https://gitlab.com/hydrawiki
 **/
 namespace HydraCore;
 
