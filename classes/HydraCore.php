@@ -203,7 +203,7 @@ class HydraCore {
 	 * @return	string	String Image URL.
 	 */
 	static public function getWikiImageUrlFromMercury($siteKey) {
-		global $wgScriptPath;
+		global $wgScriptPath, $wgMercuryAPIKey;
 
 		$redis = \RedisCache::getClient('cache');
 		$redisKey = 'wikiavatar:'.$siteKey;
@@ -218,7 +218,7 @@ class HydraCore {
 			}
 
 			// fallback to direct lookup from the gamepedia.com api
-			$result = \Http::post('https://www.gamepedia.com/api/get-avatar?apikey=***REMOVED***&wikiMd5='.urlencode($siteKey));
+			$result = \Http::post('https://www.gamepedia.com/api/get-avatar?apikey='.urlencode($wgMercuryAPIKey).'&wikiMd5='.urlencode($siteKey));
 			$json = json_decode($result, true);
 			if (!empty($json) && isset($json['AvatarUrl'])) {
 				$json['AvatarUrl'] = str_replace('http://', 'https://', $json['AvatarUrl']); //Not a clean fix for this, but it works.
