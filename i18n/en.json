@@ -74,5 +74,7 @@
 	"group-grasp": "GRASP",
 	"group-grasp-member": "{{GENDER:$1|Gamepedia Rapid Anti-Spam Patrol (GRASP)}}",
 	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol",
-	"hydra-apihelp-do-links": "Possible values for do:\n\n$1"
+	"hydra-apihelp-do-links": "Possible values for do:\n\n$1",
+	"right-font_manager": "Access the [[Special:FontManager|font manager]]",
+	"right-font_upload": "Upload fonts for use in the [[Special:FontManager|font manager]]"
 }
