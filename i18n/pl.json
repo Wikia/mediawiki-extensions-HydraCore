@@ -35,13 +35,11 @@
 	"movepage-helppage": "gphelp:Moving a page",
 	"newimages-helppage": "gphelp:New images",
 	"newpages-helppage": "gphelppl:Pomoc:Nowe_pliki",
-	"preferences-helppage": "gphelp:Preferences",
 	"randomincategory-helppage": "gphelp:RandomInCategory",
 	"recentchanges-helppage": "gphelp:Recent changes",
 	"recentchangeslinked-helppage": "gphelp:Related changes",
 	"revisiondelete-helppage": "gphelppl:RevisionDelete",
 	"undelete-helppage": "gphelp:Undelete",
-	"upload-helppage": "gphelp:Managing files",
 	"userrights-helppage": "gphelp:Assigning permissions",
 	"watchlist-helppage": "gphelp:Watching pages",
 	"whatlinkshere-helppage": "gphelp:What links here",
@@ -76,5 +74,5 @@
 	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol",
 	"hydra-apihelp-do-links": "Możliwe wartości do wykonania:\n\n$1",
 	"right-font_manager": "Dostęp do [[Special:FontManager|menadżera czcionek]]",
-	"right-font_upload": "Przesyłanie czcionek używanych w [[Special:FontManager|menadżerze czcuionek]]"
+	"right-font_upload": "Przesyłanie czcionek używanych w [[Special:FontManager|menadżerze czcionek]]"
 }
