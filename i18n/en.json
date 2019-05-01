@@ -76,5 +76,7 @@
 	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol",
 	"hydra-apihelp-do-links": "Possible values for do:\n\n$1",
 	"right-font_manager": "Access the [[Special:FontManager|font manager]]",
-	"right-font_upload": "Upload fonts for use in the [[Special:FontManager|font manager]]"
+	"right-font_upload": "Upload fonts for use in the [[Special:FontManager|font manager]]",
+	"pagination_pages": "Page $1 of $2",
+	"items_on_page": "$1-$2 of $3"
 }
