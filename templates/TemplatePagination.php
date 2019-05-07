@@ -30,7 +30,7 @@ class TemplatePagination {
 			$html .= "
 		<ul class='pagination'>";
 			if (isset($pagination['stats'])) {
-				$html .= "<li class='pagination_stats'>Page {$pagination['stats']['current_page']} of {$pagination['stats']['pages']}</li>";
+				$html .= "<li class='pagination_stats'>" . wfMessage('pagination_pages', $pagination['stats']['current_page'], $pagination['stats']['pages']) . "</li>";
 			}
 
 			if (count($pagination['pages']) > 1) {
@@ -45,6 +45,9 @@ class TemplatePagination {
 				if ($pagination['last']) {
 					$html .= "<li><a href='{$title->getFullURL($arguments + ['st' => $pagination['last']['st']])}'>&raquo;</a></li>";
 				}
+			}
+			if ($pagination['showTotal']) {
+				$html .= "<li class='pagination_stats'>" . wfMessage('items_on_page', $pagination['stats']['items_start'], $pagination['stats']['items_end'], $pagination['stats']['total']) . "</li>";
 			}
 			$html .= "
 		</ul>";

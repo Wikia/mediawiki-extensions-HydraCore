@@ -141,7 +141,13 @@ class HydraCore {
 
 		$pagination['first']	= ['st' => 0, 'selected' => false];
 		$pagination['last']		= ['st' => $lastStart, 'selected' => false];
-		$pagination['stats']	= ['pages' => $totalPages, 'total' => $totalItems, 'current_page' => $currentPage];
+		$pagination['stats']	= [
+			'pages' => $totalPages,
+			'total' => $totalItems,
+			'current_page' => $currentPage,
+			'items_start' => $itemStart + 1,
+			'items_end' => $itemStart + ($itemsPerPage - ($currentPage * $itemsPerPage - min($currentPage * $itemsPerPage, $totalItems)))
+		];
 
 		$pageStart	= min($currentPage, $currentPage - ($extraPages / 2));
 		$pageEnd	= min($totalPages, $currentPage + ($extraPages / 2));
@@ -174,11 +180,13 @@ class HydraCore {
 	 * @param	integer	[Optional] Number of extra page numbers to show.
 	 * @param	array	[Optional] Array of extra URL arguments to append to pagination URLs.
 	 * @param	string	[Optional] Base URL to use.
+	 * @param	boolean	[Optional] Show item range next to pagination.
 	 * @return	string	Built Pagination HTML
 	 */
-	static public function generatePaginationHtml(Title $title, $totalItems, $itemsPerPage = 100, $itemStart = 0, $extraPages = 4, $extraArguments = []) {
+	static public function generatePaginationHtml(Title $title, int $totalItems, int $itemsPerPage = 100, int $itemStart = 0, int $extraPages = 4, array $extraArguments = [], bool $showTotal = true) {
 		$pagination = self::generatePagination($totalItems, $itemsPerPage, $itemStart, $extraPages);
 		$pagination['extra'] = $extraArguments;
+		$pagination['showTotal'] = $showTotal;
 		$templates = new TemplatePagination;
 		$html = $templates->pagination($pagination, $title);
 
