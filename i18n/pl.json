@@ -74,5 +74,12 @@
 	"grouppage-grasp": "{{ns:project}}:Gamepedia Rapid Anti-Spam Patrol",
 	"hydra-apihelp-do-links": "Możliwe wartości do wykonania:\n\n$1",
 	"right-font_manager": "Dostęp do [[Special:FontManager|menadżera czcionek]]",
-	"right-font_upload": "Przesyłanie czcionek używanych w [[Special:FontManager|menadżerze czcionek]]"
+	"right-font_upload": "Przesyłanie czcionek używanych w [[Special:FontManager|menadżerze czcionek]]",
+	"bad-ad": "Zgłaszanie nieodpowiednich reklam",
+	"bad-ad-url": "gphelppl:Zgłaszanie nieodpowiednich reklam",
+	"gamepedia-contact": "Dane kontaktowe",
+	"gamepedia-contact-url": "gphelppl:Jak skontaktować się z administracją Curse",
+	"gamepedia-help": "Help Wiki (EN)",
+	"noticeboard": "Powiadom admina",
+	"noticeboard-url": "Project:Prośby do administratorów"
 }
