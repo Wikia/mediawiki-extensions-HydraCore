@@ -252,7 +252,7 @@ class HydraCore {
 		}
 
 		// If we are returning a URL, cache it
-		if ($redis !== false && substr($returnValue, 0, 7) === "http://") {
+		if ($redis !== false && substr($returnValue, 0, 8) === "https://") {
 			$redis->setEx($redisKey, 86400, $returnValue); //Expire in twenty-four hours.
 		}
 
