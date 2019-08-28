@@ -231,18 +231,11 @@ class HydraCore {
 			$result = \Http::post('https://www.gamepedia.com/api/get-avatar?apikey='.urlencode($wgMercuryAPIKey).'&wikiMd5='.urlencode($siteKey));
 			$json = json_decode($result, true);
 
-			if (!empty($json) && isset($json['AvatarUrl']) && $size == "avatar") {
-				//Cache to Redis.
-				if ($redis !== false) {
-					$redis->setEx($redisKey, 86400, $json['AvatarUrl']); //Expire in twenty-four hours.
-				}
-				$returnValue = $json['AvatarUrl'];
-			}
-			else if (!empty($json) && $size == "large") {
-				if(isset($json['FeaturedAvatarUrl'])) {
+			if (!empty($json) ) {
+				if(isset($json['FeaturedAvatarUrl']) && $size == "large") {
 					$returnValue = $json['FeaturedAvatarUrl'];
 				}
-				else if(isset($json['BannerAvatarUrl'])) {
+				else if(isset($json['BannerAvatarUrl']) && $size == "large") {
 					$returnValue = $json['BannerAvatarUrl'];
 				}
 				else if(isset($json['AvatarUrl'])) {
