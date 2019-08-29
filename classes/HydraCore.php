@@ -234,11 +234,9 @@ class HydraCore {
 			if (!empty($json) ) {
 				if(isset($json['FeaturedAvatarUrl']) && $size == "large") {
 					$returnValue = $json['FeaturedAvatarUrl'];
-				}
-				else if(isset($json['BannerAvatarUrl']) && $size == "large") {
+				} else if(isset($json['BannerAvatarUrl']) && $size == "large") {
 					$returnValue = $json['BannerAvatarUrl'];
-				}
-				else if(isset($json['AvatarUrl'])) {
+				} else if(isset($json['AvatarUrl'])) {
 					$returnValue = $json['AvatarUrl'];
 				}
 			}
