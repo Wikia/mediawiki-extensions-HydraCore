@@ -232,11 +232,11 @@ class HydraCore {
 			$json = json_decode($result, true);
 
 			if (!empty($json) ) {
-				if(isset($json['FeaturedAvatarUrl']) && $size == "large") {
+				if (isset($json['FeaturedAvatarUrl']) && $size == "large") {
 					$returnValue = $json['FeaturedAvatarUrl'];
-				} else if(isset($json['BannerAvatarUrl']) && $size == "large") {
+				} elseif (isset($json['BannerAvatarUrl']) && $size == "large") {
 					$returnValue = $json['BannerAvatarUrl'];
-				} else if(isset($json['AvatarUrl'])) {
+				} elseif (isset($json['AvatarUrl'])) {
 					$returnValue = $json['AvatarUrl'];
 				}
 			}
