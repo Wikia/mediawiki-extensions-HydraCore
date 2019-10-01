@@ -232,9 +232,7 @@ class HydraCore {
 			$json = json_decode($result, true);
 
 			if (!empty($json) ) {
-				if (isset($json['FeaturedAvatarUrl']) && $size == "large") {
-					$returnValue = $json['FeaturedAvatarUrl'];
-				} elseif (isset($json['BannerAvatarUrl']) && $size == "large") {
+				if (isset($json['BannerAvatarUrl']) && $size == "large") {
 					$returnValue = $json['BannerAvatarUrl'];
 				} elseif (isset($json['AvatarUrl'])) {
 					$returnValue = $json['AvatarUrl'];
