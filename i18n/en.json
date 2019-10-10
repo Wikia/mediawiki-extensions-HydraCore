@@ -86,5 +86,7 @@
 	"gamepedia-support": "Gamepedia support",
 	"gamepedia-support-url": "https://gamepedia.zendesk.com",
 	"noticeboard": "Admin noticeboard",
-	"noticeboard-url": "Project:Admin noticeboard"
+	"noticeboard-url": "Project:Admin noticeboard",
+	"api-parse-withads-desc": "Add advertisements to output.",
+	"api-parse-modified-hydracore": "Extended by HydraCore"
 }

@@ -148,8 +148,8 @@
 		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
 		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged",
 		"APIGetAllowedParams": "HydraCoreHooks::onAPIGetAllowedParams",
-		"APIGetDescription": "HydraCoreHooks::onAPIGetDescription",
-		"APIGetParamDescription": "HydraCoreHooks::onAPIGetParamDescription"
+		"APIGetDescriptionMessages": "HydraCoreHooks::onAPIGetDescriptionMessages",
+		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages"
 
 	},
 	"ConfigRegistry": {
