@@ -271,32 +271,31 @@ class HydraCoreHooks {
 	}
 
 	/**
-	 * APIGetParamDescription hook handler
+	 * APIGetParamDescriptionMessages hook handler
 	 *
-	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/APIGetParamDescription
+	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/APIGetParamDescriptionMessages
 	 * @param ApiBase $module
-	 * @param Array|bool $params
+	 * @param Array|bool $msgs
 	 * @return bool
 	 */
-	public static function onAPIGetParamDescription(ApiBase &$module, &$params) {
+	public static function onAPIGetParamDescriptionMessages(ApiBase $module, &$msgs) {
 		if ($module->getModuleName() == 'parse') {
-			$params['withads'] = 'Add advertisements to output.';
+			$msgs['withads'] = [$module->msg('api-parse-withads-desc')];
 		}
 		return true;
 	}
 
 	/**
-	 * APIGetDescription hook handler
+	 * APIGetDescriptionMessages hook handler
 	 *
-	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/APIGetDescription
+	 * @see: https://www.mediawiki.org/wiki/Manual:Hooks/APIGetDescriptionMessages
 	 * @param ApiBase $module
-	 * @param Array|string $desc
+	 * @param Array|string $msgs
 	 * @return bool
 	 */
-	public static function onAPIGetDescription(ApiBase &$module, &$desc) {
+	public static function onAPIGetDescriptionMessages(ApiBase $module, &$msgs) {
 		if ($module->getModuleName() == 'parse') {
-			$desc = (array)$desc;
-			$desc[] = 'Extended by HydraCore';
+			$msgs[] = $module->msg('api-parse-modified-hydracore');
 		}
 		return true;
 	}
