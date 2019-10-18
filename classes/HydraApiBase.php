@@ -125,16 +125,16 @@ abstract class HydraApiBase extends ApiBase {
 		$method = 'do'.ucfirst($do);
 
 		if ( !in_array($do, array_keys($this->getActions())) ) {
-			$this->dieUsage('Undefined DO action: '.$do, 'bad_api_request');
+			$this->dieWithError('Undefined DO action: '.$do, 'bad_api_request');
 		}
 
 		if (!method_exists($this, $method)) {
-			$this->dieUsage('Undefined method: '.get_class($this).'::'.$method, 'bad_api_class');
+			$this->dieWithError('Undefined method: '.get_class($this).'::'.$method, 'bad_api_class');
 		}
 
 		$perm = $this->getPermissionRequired();
 		if ($perm && !$this->getUser()->isAllowed($perm)) {
-			$this->dieUsage(wfMessage('badaccess-groups', $perm, 1)->text(), 'permission_needed');
+			$this->dieWithError(wfMessage('badaccess-groups', $perm, 1)->text(), 'permission_needed');
 		}
 
 		return $this->$method();
