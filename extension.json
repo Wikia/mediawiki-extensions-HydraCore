@@ -181,7 +181,8 @@
 			"global_bureaucrat": "bureaucrat",
 			"global_sysop": "sysop",
 			"hydra_staff": false
-		}
+		},
+		"ChildClusterServers": []
 	},
 	"manifest_version": 1
 }
