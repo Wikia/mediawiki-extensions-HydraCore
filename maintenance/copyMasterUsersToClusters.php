@@ -144,10 +144,12 @@ class CopyMasterUsersToClusters extends Maintenance {
 					continue;
 				}
 				$this->output("... -> [$clusterName] Inserting $insertCount users ...\n");
-				// Insert users -- don't IGNORE, because if a key constraint is hit, something bad has happened.
+				// Insert users
 				$cluster->insert(
 					'user',
-					$userInsert
+					$userInsert,
+					__METHOD__,
+					['IGNORE']
 				);
 				$this->output("... -> [$clusterName] " . $cluster->affectedRows() . " user rows affected\n");
 				// Can IGNORE here since links will be updated to this value eventually anyway.
