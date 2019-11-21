@@ -121,8 +121,8 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 			'ipb_by',
 			'ipb_by_text',
 			[
-				'rc_user > 0',
-				'rc_user < 40275837'
+				'ipb_by > 0',
+				'ipb_by < 40275837'
 			],
 			['ipb_id']
 		);
@@ -168,9 +168,10 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 
 		$dbw = $this->getDB(DB_MASTER);
 		$next = '1=1';
-		$countZeroed = 0;
 		$countAssigned = 0;
+		$countNamed = 0;
 		$countPrefixed = 0;
+		$countZeroed = 0;
 		while (true) {
 			// Fetch the rows needing update
 			$res = $dbw->select(
@@ -192,6 +193,9 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 				$name = $row->$nameField;
 				$userIdGiven = (int)$row->$idField;
 				$userIdTest = User::idFromName($name);
+				if ($userIdTest !== null) {
+					$userIdTest = intval($userIdTest);
+				}
 				$usable = User::isUsableName($name);
 				$set = [];
 				$errors = [];
@@ -212,6 +216,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 							$idField => $userIdGiven,
 							$nameField => substr($name, 0, 255)
 						];
+						$counter = &$countNamed;
 					}
 					$errors[] = "Assigning name {$name}";
 				}
@@ -231,16 +236,13 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 				}
 				$this->output(implode(', ', $errors)."\n");
 
-				/*$dbw->update(
+				$dbw->update(
 					$table,
 					$set,
-					array_intersect_key((array)$row, $pkFilter) + [
-						$idField => 0,
-						$nameField => $name,
-					],
+					array_intersect_key((array)$row, $pkFilter),
 					__METHOD__
 				);
-				$counter += $dbw->affectedRows();*/
+				$counter += $dbw->affectedRows();
 			}
 
 			list( $next, $display ) = $this->makeNextCond($dbw, $orderby, $row);
@@ -249,7 +251,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 		}
 
 		$this->output(
-			"Cleanup complete: Assigned {$countAssigned}, zeroed {$countZeroed}, and prefixed {$countPrefixed} row(s)\n"
+			"Cleanup complete: Assigned {$countAssigned}, zeroed {$countZeroed}, fixed {$countNamed} names, and prefixed {$countPrefixed} row(s)\n"
 		);
 	}
 
