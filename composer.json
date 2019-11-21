@@ -10,9 +10,7 @@
 		}
 	],
 	"require": {
-		"php": ">=7.0.0",
-		"onoi/cache": "^1.2",
-		"hydrawiki/ping": "^1.1"
+		"php": ">=7.0.0"
 	},
 	"require-dev": {
 		"hydrawiki/hydrawiki-codesniffer": "^1.0.0"
