@@ -1,0 +1,24 @@
+{
+	"name": "hydra/hydra-core",
+	"version": "3.0.2",
+	"type": "mediawiki-extension",
+	"description": "Core functionality for Hydra Wiki Platform extensions.",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Hydra Wiki Platform Team"
+		}
+	],
+	"require": {
+		"php": ">=7.0.0"
+	},
+	"require-dev": {
+		"hydrawiki/hydrawiki-codesniffer": "^1.0.0"
+	},
+	"scripts": {
+		"test": [
+			"phpcs -p -s"
+		],
+		"fix": "phpcbf"
+	}
+}
