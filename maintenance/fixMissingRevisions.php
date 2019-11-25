@@ -37,7 +37,7 @@ class FixMissingRevisions extends Maintenance {
 		while ($row = $results->fetchRow()) {
 			$oldID = $row['rev_text_id'];
 			$this->output('Fixing revision ' . $row['rev_id'] . ', which was missing rev_text_id: ' . $row['rev_text_id'] . "\n");
-			$dbw->insert('text', ['old_id' => $row['rev_text_id'], 'old_text' => '', 'old_flags' => 'utf-8'], __METHOD__);
+			$dbw->insert('text', ['old_id' => $row['rev_text_id'], 'old_text' => '', 'old_flags' => 'utf-8'], __METHOD__, ["IGNORE"]);
 		}
 	}
 }
