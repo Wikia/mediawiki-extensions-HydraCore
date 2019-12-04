@@ -140,17 +140,17 @@
 		"HydraCoreHooks::addLateHooks"
 	],
 	"Hooks": {
-		"GetPreferences": "HydraCoreHooks::onGetPreferences",
-		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
-		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
-		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
-		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
-		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
-		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged",
 		"APIGetAllowedParams": "HydraCoreHooks::onAPIGetAllowedParams",
 		"APIGetDescriptionMessages": "HydraCoreHooks::onAPIGetDescriptionMessages",
-		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages"
-
+		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages",
+		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
+		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
+		"GetPreferences": "HydraCoreHooks::onGetPreferences",
+		"MediaWikiServices": "HydraCoreHooks::onMediaWikiServices",
+		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
+		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
+		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
+		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged"
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
