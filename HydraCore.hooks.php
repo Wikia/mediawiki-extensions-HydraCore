@@ -139,7 +139,7 @@ class HydraCoreHooks {
 		if (!$user->getId()) {
 			return true;
 		}
-
+		/*
 		if (isset(self::$globalGroups[$user->getId()])) {
 			$groups = array_merge($groups, self::$globalGroups[$user->getId()]);
 		} else {
@@ -186,7 +186,7 @@ class HydraCoreHooks {
 		}
 
 		self::$globalGroups[$user->getId()] = $groups;
-
+		*/
 		return true;
 	}
 
@@ -201,6 +201,7 @@ class HydraCoreHooks {
 	 * @return	boolean	true
 	 */
 	static public function onUserGroupsChanged($user, $groupsAdded, $groupsRemoved, $performer) {
+		/*
 		if (!$user->getId()) {
 			return true;
 		}
@@ -240,7 +241,7 @@ class HydraCoreHooks {
 				wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
 			}
 		}
-
+		*/
 		return true;
 	}
 
