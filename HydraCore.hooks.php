@@ -114,6 +114,8 @@ class HydraCoreHooks {
 	 * @return	boolean Whether or not to add the group.
 	 */
 	static public function onUserAddGroup($user, &$group) {
+
+		/*
 		if (Environment::isMasterWiki()) {
 			return true;
 		}
@@ -123,7 +125,7 @@ class HydraCoreHooks {
 		if (in_array($group, $masterOnlyUserGroups)) {
 			return false;
 		}
-
+		*/
 		return true;
 	}
 
@@ -136,10 +138,11 @@ class HydraCoreHooks {
 	 * @return	boolean True
 	 */
 	static public function onUserEffectiveGroups(&$user, &$groups) {
+		/*
 		if (!$user->getId()) {
 			return true;
 		}
-		/*
+
 		if (isset(self::$globalGroups[$user->getId()])) {
 			$groups = array_merge($groups, self::$globalGroups[$user->getId()]);
 		} else {
@@ -349,6 +352,7 @@ class HydraCoreHooks {
 	 * @return bool
 	 */
 	public static function onMediaWikiServices($services) {
+		/*
 		global $wgSharedDB, $wgSharedTables, $wgSharedSchema, $wgSharedPrefix;
 
 		// Don't do anything if SharedDB isn't configured.
@@ -372,7 +376,7 @@ class HydraCoreHooks {
 				);
 			}
 		);
-
+		*/
 		return true;
 	}
 }
