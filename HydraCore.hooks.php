@@ -12,7 +12,7 @@
  *
 **/
 
-use DynamicSettings\Environment;
+#use DynamicSettings\Environment;
 
 class HydraCoreHooks {
 	/**
