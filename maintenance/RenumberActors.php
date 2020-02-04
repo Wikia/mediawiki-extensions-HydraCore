@@ -26,7 +26,7 @@ class RenumberActors extends LoggedUpdateMaintenance {
 	 *
 	 * @var array
 	 */
-	private array $localActorIdToSharedActorId = [];
+	private $localActorIdToSharedActorId = [];
 
 	/**
 	 * Constructor
