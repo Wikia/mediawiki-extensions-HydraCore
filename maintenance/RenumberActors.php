@@ -279,8 +279,8 @@ class RenumberActors extends LoggedUpdateMaintenance {
 		$count = 0;
 		$newRows = [];
 		$res = $dbr->select(
-			$tableName,
-			$columns + ['actor_user', 'actor_name'],
+			[$tableName, 'actor'],
+			array_merge($columns, ['actor_user', 'actor_name']),
 			[],
 			__METHOD__,
 			[],
@@ -292,7 +292,9 @@ class RenumberActors extends LoggedUpdateMaintenance {
 			]
 		);
 		while ($row = $dbr->fetchRow($res)) {
-			$sharedActorId = $this->getSharedActorId($row[$actorColumn]);
+			$sharedActorId = $this->getSharedActorId($row[$actorColumn], $row['actor_user'], $row['actor_name']);
+			unset($row['actor_user']);
+			unset($row['actor_name']);
 			$newRows[] = [$actorColumn => $sharedActorId] + $row;
 			$count++;
 		}
@@ -307,7 +309,7 @@ class RenumberActors extends LoggedUpdateMaintenance {
 	/**
 	 * Switch in the new table
 	 *
-	 * @param string   $tableName   The name of the table
+	 * @param string $tableName
 	 *
 	 * @return void
 	 */
@@ -333,82 +335,67 @@ class RenumberActors extends LoggedUpdateMaintenance {
 	 *
 	 * @return int
 	 */
-	private function getSharedActorId(int $localActorId): int {
+	private function getSharedActorId(int $localActorId, ?int $localActorUser, string $localActorName): int {
 		if (isset($this->localActorIdToSharedActorId[$localActorId])) {
 			return $this->localActorIdToSharedActorId[$localActorId];
 		}
 
 		$dbr = $this->getDB(DB_REPLICA);
-		$localRow = (array)$dbr->selectRow(
-			'actor',
-			['actor_user', 'actor_name'],
-			['actor_id' => $localActorId]
-		);
-
-		if ($localRow === false) {
-			throw new Exception("Cannot find actor $localActorId in local table");
-		}
-
-		$actorDbr = $this->getDBForSharedActor(DB_REPLICA);
-		if ($localRow['actor_user'] == null) {
-			$sharedRow = (array)$actorDbr->selectRow(
-				'actor',
+		if ($localActorUser == null) {
+			$sharedRow = (array)$dbr->selectRow(
+				'hydra.actor',
 				['actor_id'],
-				['actor_name' => $localRow['actor_name']]
+				['actor_name' => $localActorName]
 			);
 
-			if ($sharedRow === false) {
-				throw new Exception("Cannot find actor by name {$localRow['actor_name']} in shared table");
+			if ($sharedRow === false || $sharedRow['actor_id'] === null) {
+				$this->output("... creating new actor for $localActorName\n");
+				$dbw = $this->getDB(DB_MASTER);
+				$dbw->insert(
+					'hydra.actor',
+					[
+						'actor_user' => null,
+						'actor_name' => $localActorName
+					]
+				);
+				$sharedRow = [
+					'actor_id' => $dbw->insertId()
+				];
 			}
 		} else {
-			$sharedRow = (array)$actorDbr->selectRow(
-				'actor',
+			$sharedRow = (array)$dbr->selectRow(
+				'hydra.actor',
 				['actor_id', 'actor_name'],
-				['actor_user' => $localRow['actor_user']]
+				['actor_user' => $localActorUser]
 			);
 
-			if ($sharedRow === false) {
-				throw new Exception("Cannot find actor by userid {$localRow['actor_user']} in shared table");
-			}
-
-			if ($sharedRow['actor_name'] !== $localRow['actor_name']) {
+			if ($sharedRow === false || $sharedRow['actor_id'] === null) {
+				$this->output("... creating new actor for $localActorName\n");
+				$dbw = $this->getDB(DB_MASTER);
+				$dbw->insert(
+					'hydra.actor',
+					[
+						'actor_user' => $localActorUser,
+						'actor_name' => $localActorName
+					]
+				);
+				$sharedRow = [
+					'actor_id' => $dbw->insertId()
+				];
+			} else if ($sharedRow['actor_name'] !== $localActorName) {
 				$this->output(
-					"... assuming user {$localRow['actor_name']}/{$localRow['actor_user']} " .
+					"... assuming user {$localActorName}/{$localActorUser} " .
 					"was renamed to {$sharedRow['actor_name']}\n"
 				);
 			}
 		}
 
+		if (!$sharedRow['actor_id']) {
+			throw new Exception("Failed to get a shared actor for $localActorName");
+		}
+
 		$this->localActorIdToSharedActorId[$localActorId] = $sharedRow['actor_id'];
 		return $sharedRow['actor_id'];
-	}
-
-	/**
-	 * Return a database connection which uses $wgSharedDB for actor table
-	 * queries.
-	 *
-	 * @param int $dbtype DB_REPLICA or DB_MASTER
-	 *
-	 * @return \Wikimedia\Rdbms\IDatabase
-	 */
-	private function getDBForSharedActor(int $dbtype = DB_REPLICA) {
-		global $wgSharedTables, $wgSharedDB, $wgSharedSchema, $wgSharedPrefix;
-
-		// Ensure actor uses $wgSharedDB for this connection
-		$lbf = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-		$lb = $lbf->getMainLB();
-		$lb->setTableAliases(
-			array_fill_keys(
-				$wgSharedTables + ['actor'],
-				[
-					'dbname' => $wgSharedDB,
-					'schema' => $wgSharedSchema,
-					'prefix' => $wgSharedPrefix
-				]
-			)
-		);
-
-		return $lb->getConnection($dbtype);
 	}
 
 	/**
