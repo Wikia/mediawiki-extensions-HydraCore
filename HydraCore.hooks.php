@@ -146,13 +146,10 @@ class HydraCoreHooks {
 		if (isset(self::$globalGroups[$user->getId()])) {
 			$groups = array_merge($groups, self::$globalGroups[$user->getId()]);
 		} else {
-			$lookup = CentralIdLookup::factory();
-			$globalId = $lookup->centralIdFromLocalUser($user);
-
 			$redis = RedisCache::getClient('cache');
 
-			if ($globalId && $redis !== false) {
-				$globalKey = 'groups:global:globalId:'.$globalId;
+			if ($redis !== false) {
+				$globalKey = 'groups:global:userId:'.$user->getId();
 
 				try {
 					if (!$redis->exists($globalKey) && Environment::isMasterWiki() && count($user->getGroups())) {
@@ -221,19 +218,13 @@ class HydraCoreHooks {
 			}
 		}
 
-		$lookup = CentralIdLookup::factory();
-		$globalId = $lookup->centralIdFromLocalUser($user);
-
 		$redis = RedisCache::getClient('cache');
-		if (!$globalId) {
-			return true;
-		}
 
 		if ($redis !== false && count($user->getGroups())) {
 			$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 			$configGlobalGroups = (array) $config->get('GlobalGroups');
 
-			$key = 'groups:global:globalId:'.$globalId;
+			$key = 'groups:global:userId:'.$user->getId();
 			try {
 				//Get the keys from the configured global groups and use them to limit the groups pushed into the global scope.
 				$configGlobalGroups = array_keys($configGlobalGroups);
