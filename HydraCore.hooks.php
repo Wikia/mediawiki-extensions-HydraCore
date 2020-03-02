@@ -216,17 +216,21 @@ class HydraCoreHooks {
 
 		$redis = RedisCache::getClient('cache');
 
-		if ($redis !== false && count($user->getGroups())) {
+		if ($redis !== false) {
 			$config = ConfigFactory::getDefaultInstance()->makeConfig('hydracore');
 			$configGlobalGroups = (array) $config->get('GlobalGroups');
 
 			$key = 'groups:global:userId:'.$user->getId();
 			try {
-				//Get the keys from the configured global groups and use them to limit the groups pushed into the global scope.
-				$configGlobalGroups = array_keys($configGlobalGroups);
-				$globalGroups = array_intersect($configGlobalGroups, $user->getGroups());
-				$redis->set($key, serialize($globalGroups));
-				$redis->expire($key, 3600);
+				if (count($user->getGroups())) {
+					//Get the keys from the configured global groups and use them to limit the groups pushed into the global scope.
+					$configGlobalGroups = array_keys($configGlobalGroups);
+					$globalGroups = array_intersect($configGlobalGroups, $user->getGroups());
+					$redis->set($key, serialize($globalGroups));
+					$redis->expire($key, 3600);
+				} else {
+					$redis->del($key);
+				}
 			} catch (RedisException $e) {
 				wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
 			}
