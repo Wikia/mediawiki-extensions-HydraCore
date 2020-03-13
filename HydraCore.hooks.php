@@ -12,7 +12,6 @@
  *
 **/
 
-#use DynamicSettings\Environment;
 
 class HydraCoreHooks {
 	/**
@@ -106,6 +105,7 @@ class HydraCoreHooks {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Stops the special master only user groups from being added to accounts on child wikis.
 	 *
 	 * @access	public
@@ -244,6 +244,8 @@ class HydraCoreHooks {
 	}
 
 	/**
+=======
+>>>>>>> Remove Hydra user group handling hooks
 	 * Add hooks late so that they are ensured to come last.
 	 *
 	 * @access	public

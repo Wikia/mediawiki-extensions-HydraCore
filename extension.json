@@ -144,10 +144,7 @@
 		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
 		"GetPreferences": "HydraCoreHooks::onGetPreferences",
 		"MediaWikiServices": "HydraCoreHooks::onMediaWikiServices",
-		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
-		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
-		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
-		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged"
+		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit"
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
