@@ -174,40 +174,4 @@ class HydraCoreHooks {
 		}
 		return true;
 	}
-
-	/**
-	 * MediaWikiServices hook handler
-	 *
-	 * @param MediaWikiServices $services The new MediaWikiServices instance
-	 *
-	 * @return bool
-	 */
-	public static function onMediaWikiServices($services) {
-		/*
-		global $wgSharedDB, $wgSharedTables, $wgSharedSchema, $wgSharedPrefix;
-
-		// Don't do anything if SharedDB isn't configured.
-		if (!($wgSharedDB && $wgSharedTables)) {
-			return true;
-		}
-
-		// Apply $wgSharedDB table aliases to all LBs created by LBFactory
-		$services->addServiceManipulator(
-			'DBLoadBalancerFactory',
-			function ($lbf, $services) use ($wgSharedDB, $wgSharedTables, $wgSharedSchema, $wgSharedPrefix) {
-				$lbf->setTableAliases(
-					array_fill_keys(
-						$wgSharedTables,
-						[
-							'dbname' => $wgSharedDB,
-							'schema' => $wgSharedSchema,
-							'prefix' => $wgSharedPrefix
-						]
-					)
-				);
-			}
-		);
-		*/
-		return true;
-	}
 }
