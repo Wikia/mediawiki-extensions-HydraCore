@@ -144,10 +144,7 @@
 		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
 		"GetPreferences": "HydraCoreHooks::onGetPreferences",
 		"MediaWikiServices": "HydraCoreHooks::onMediaWikiServices",
-		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
-		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
-		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
-		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged"
+		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit"
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
@@ -163,22 +160,6 @@
 			"ttf",
 			"woff"
 		],
-		"MasterOnlyUserGroups": [
-			"ads_manager",
-			"global_bot",
-			"global_bureaucrat",
-			"global_sysop",
-			"hydra_admin",
-			"hydra_staff",
-			"grasp",
-			"wiki_manager"
-		],
-		"GlobalGroups": {
-			"global_bot": "bot",
-			"global_bureaucrat": "bureaucrat",
-			"global_sysop": "sysop",
-			"hydra_staff": false
-		},
 		"ChildClusterServers": []
 	},
 	"manifest_version": 1
