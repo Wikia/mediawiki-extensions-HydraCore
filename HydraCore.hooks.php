@@ -12,7 +12,6 @@
  *
 **/
 
-
 class HydraCoreHooks {
 	/**
 	 * Hooks Initialized
