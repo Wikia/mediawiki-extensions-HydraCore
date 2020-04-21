@@ -43,31 +43,6 @@ class HydraCoreHooks {
 	}
 
 	/**
-	 * Reorganize email preferences (assuming that the Echo extension exists)
-	 *
-	 * @access	public
-	 * @param	object	user whose preferences are being modified
-	 * @param	array	Preferences description object, to be fed to an HTMLForm
-	 * @return	boolean	true
-	 */
-	static public function onGetPreferences($user, &$preferences) {
-		// only reorganize if the Echo extension exists
-		if (isset($preferences['echo-subscriptions'])) {
-			// Move these from the main "User profile" tab to the notifications tab
-			$emailFields = ['emailaddress', 'emailauthentication', 'disablemail', 'ccmeonemails', 'enotifwatchlistpages', 'enotifminoredits'];
-			foreach ($emailFields as $field) {
-				if (isset($preferences[$field])) {
-					$preferences[$field]['section'] = 'echo/emailsettings';
-				}
-			}
-			// move redundant email reminder to the default tab
-			$preferences['echo-emailaddress']['section'] = 'personal/info';
-			$preferences['echo-emailaddress']['label-message'] = 'youremail';
-		}
-		return true;
-	}
-
-	/**
 	 * Modify the response to say that all IP address can not use HTTPS.  This is a hack work around to allow HTTPS logins, but still have HTTP only so that advertisements can be displayed.
 	 *
 	 * @access	public
@@ -196,42 +171,6 @@ class HydraCoreHooks {
 				$result->addValue(null, $module->getModuleName(), $data['parse']);
 			}
 		}
-		return true;
-	}
-
-	/**
-	 * MediaWikiServices hook handler
-	 *
-	 * @param MediaWikiServices $services The new MediaWikiServices instance
-	 *
-	 * @return bool
-	 */
-	public static function onMediaWikiServices($services) {
-		/*
-		global $wgSharedDB, $wgSharedTables, $wgSharedSchema, $wgSharedPrefix;
-
-		// Don't do anything if SharedDB isn't configured.
-		if (!($wgSharedDB && $wgSharedTables)) {
-			return true;
-		}
-
-		// Apply $wgSharedDB table aliases to all LBs created by LBFactory
-		$services->addServiceManipulator(
-			'DBLoadBalancerFactory',
-			function ($lbf, $services) use ($wgSharedDB, $wgSharedTables, $wgSharedSchema, $wgSharedPrefix) {
-				$lbf->setTableAliases(
-					array_fill_keys(
-						$wgSharedTables,
-						[
-							'dbname' => $wgSharedDB,
-							'schema' => $wgSharedSchema,
-							'prefix' => $wgSharedPrefix
-						]
-					)
-				);
-			}
-		);
-		*/
 		return true;
 	}
 }

@@ -142,8 +142,6 @@
 		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages",
 		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
 		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
-		"GetPreferences": "HydraCoreHooks::onGetPreferences",
-		"MediaWikiServices": "HydraCoreHooks::onMediaWikiServices",
 		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit"
 	},
 	"ConfigRegistry": {
