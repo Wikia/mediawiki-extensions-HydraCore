@@ -203,6 +203,10 @@ class HydraCoreHooks {
 			$cache::TTL_HOUR,
 			function () use ($services, $userId) {
 				$mainConfig = $services->getMainConfig();
+				if (!$mainConfig->has('HeliosCentralDatabase')) {
+					//Stop breaking staging.
+					return [];
+				}
 				$centralDBname = $mainConfig->get('HeliosCentralDatabase');
 				if (empty($centralDBname)) {
 					return [];
