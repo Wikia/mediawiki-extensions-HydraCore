@@ -13,6 +13,7 @@
 **/
 
 use DynamicSettings\Environment;
+use MediaWiki\MediaWikiServices;
 
 class HydraCoreHooks {
 	/**
