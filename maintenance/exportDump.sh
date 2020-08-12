@@ -13,4 +13,5 @@ while getopts ":h:u:p:d:" opt; do
     ;;
   esac
 done
-mysqldump -u$user -p$pass -h$host --ignore-table=hydra.user --ignore-table=hydra.user_global $db hydra
+mysqldump -u$user -p$pass -h$host --ignore-table=$db.user --ignore-table=$db.user_global --ignore-table=$db.actor $db
+mysqldump -u$user -p$pass -h$host hydra actor
