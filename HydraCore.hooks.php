@@ -136,17 +136,18 @@ class HydraCoreHooks {
 	 * @return	boolean True
 	 */
 	static public function onUserEffectiveGroups(&$user, &$groups) {
-		if (!$user->getId()) {
+		$userId = $user->getId();
+		if (!$userId) {
 			return true;
 		}
 
-		if (isset(self::$globalGroups[$user->getId()])) {
-			$groups = array_merge($groups, self::$globalGroups[$user->getId()]);
+		if (isset(self::$globalGroups[$userId])) {
+			$groups = array_merge($groups, self::$globalGroups[$userId]);
 		} else {
 			$redis = RedisCache::getClient('cache');
 
 			if ($redis !== false) {
-				$globalKey = 'groups:global:userId:'.$user->getId();
+				$globalKey = 'groups:global:userId:'.$userId;
 
 				try {
 					if (!$redis->exists($globalKey) && Environment::isMasterWiki() && count($user->getGroups())) {
@@ -163,6 +164,8 @@ class HydraCoreHooks {
 					wfDebug(__METHOD__.": Caught RedisException - ".$e->getMessage());
 				}
 			}
+
+			$groups = array_merge($groups, self::getUserGlobalGroupsFromHelios($userId));
 
 			//Handle turning global groups into the local groups on child wikis.
 			if (!Environment::isMasterWiki()) {
@@ -182,9 +185,43 @@ class HydraCoreHooks {
 			$groups = array_unique($groups);
 		}
 
-		self::$globalGroups[$user->getId()] = $groups;
+		self::$globalGroups[$userId] = $groups;
 
 		return true;
+	}
+
+	/**
+	 * Get groups for a user from the central wiki.
+	 */
+	private static function getUserGlobalGroupsFromHelios(int $userId): array {
+		//Grab global groups from Helios and assemble here.
+		$services = MediaWikiServices::getInstance();
+		$cache = $services->getMainWANObjectCache();
+		$heliosGroups = $cache->getWithSetCallback(
+			$cache->makeGlobalKey('global-user-groups', $userId),
+			$cache::TTL_HOUR,
+			function () use ($services, $userId) {
+				$mainConfig = $services->getMainConfig();
+				$centralDBname = $mainConfig->get('HeliosCentralDatabase');
+				$dbr = $services->getDBLoadBalancerFactory()
+					->getMainLB( $centralDBname )
+					->getConnectionRef(DB_REPLICA, [], $centralDBname);
+
+					$groups = $dbr->selectFieldValues(
+						'user_groups',
+						'ug_group',
+						[ 'ug_user' => $userId ]
+					);
+
+					return $groups;
+			}
+		);
+
+		if (empty($heliosGroups)) {
+			$heliosGroups = [];
+		}
+
+		return $heliosGroups;
 	}
 
 	/**
