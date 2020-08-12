@@ -204,6 +204,9 @@ class HydraCoreHooks {
 			function () use ($services, $userId) {
 				$mainConfig = $services->getMainConfig();
 				$centralDBname = $mainConfig->get('HeliosCentralDatabase');
+				if (empty($centralDBname)) {
+					return [];
+				}
 				$dbr = $services->getDBLoadBalancerFactory()
 					->getMainLB( $centralDBname )
 					->getConnectionRef(DB_REPLICA, [], $centralDBname);
