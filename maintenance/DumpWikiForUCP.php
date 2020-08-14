@@ -35,9 +35,12 @@ class DumpWikiForUCP extends Maintenance {
 	 * @return void
 	 */
 	public function execute() {
-		$domain = $this->getOption('domain', null);
+		$domain = $this->getOption('domain');
+		if (!$domain) {
+			throw new Exception("No domain found. Set --domain to a valid domain.");
+		}
 		$wiki = Wiki::loadFromDomain($domain);
-		$this->enableMaintenance($wiki);
+		$this->enableMaintenance($domain);
 		// get the DB host name, user and password to be used by mysqldump
 		$info = $wiki->getDatabase();
 		$command = Shell::command([
@@ -65,12 +68,11 @@ class DumpWikiForUCP extends Maintenance {
 	/**
 	 * Add read only setting
 	 *
-	 * @param Wiki $wiki
+	 * @param string $domain
 	 *
 	 * @return void
 	 */
-	private function enableMaintenance(Wiki $wiki) {
-		$domain	= $wiki->getDomains()->getDomain();
+	private function enableMaintenance($domain) {
 		$settings = file_get_contents(dirname(__DIR__, 3) . '/sites/' . $domain . '/LocalSettings.php');
 		if (strpos($settings, '$wgReadOnly') === false) {
 			$settings .= '$wgReadOnly = \'This Wiki is being migrated to UCP.\';' . "\n";
