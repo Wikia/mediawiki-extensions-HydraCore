@@ -11,11 +11,11 @@
  * @link      https://gitlab.com/hydrawiki
  */
 
+require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
+
 use DynamicSettings\Sites;
 use DynamicSettings\Wiki;
 use MediaWiki\Shell\Shell;
-
-require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
 
 class DumpWikiForUCP extends Maintenance {
 	/**
