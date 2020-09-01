@@ -15,6 +15,6 @@ while getopts ":h:u:p:d:" opt; do
 done
 
 rm /tmp/$db.sql*
-mysqldump -u$user -p$pass -h$host --ignore-table=$db.user --ignore-table=$db.user_global --ignore-table=$db.actor $db > /tmp/$db.sql
-mysqldump -u$user -p$pass -h$host hydra actor >> /tmp/$db.sql
+mysqldump -u$user -p$pass -h$host --ignore-table=$db.user --ignore-table=$db.user_global --ignore-table=$db.actor --skip-definer $db > /tmp/$db.sql
+mysqldump -u$user -p$pass -h$host --skip-definer hydra actor >> /tmp/$db.sql
 bzip2 -k /tmp/$db.sql
