@@ -61,7 +61,6 @@ class DumpWikiForUCP extends Maintenance {
 			$this->error($result->getStderr() . "\n");
 			throw new Exception("Unable to generate a SQL dump of '{$domain}' (using {$info['db_server']})");
 		}
-		$this->output($result->getStdout());
 		return true;
 	}
 

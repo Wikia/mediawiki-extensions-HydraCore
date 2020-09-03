@@ -46,12 +46,23 @@ class DumpWikiInfo extends Maintenance {
 		 * @var Wiki
 		 */
 		$wiki = Wiki::loadFromDomain($domain);
+		$dbInfo = $wiki->getDatabase();
+		$server = $dbInfo['db_server_replica'];
+		$port = $dbInfo['db_port'];
+		$user = $dbInfo['db_user'];
+		$password = $dbInfo['db_password'];
+		$name = $dbInfo['db_name'];
 		$params = [
 			'sitename' => $wiki->getName(),
 			'metaname' => $wiki->getMetaName(),
-			'dbname' => $wiki->getDatabase()['db_name'],
 			'language' => $wiki->getLanguage(),
-			'sitekey' => $wiki->getSiteKey()
+			'sitekey' => $wiki->getSiteKey(),
+			'db_server' => $server,
+			'db_port' => $port,
+			'db_user' => $user,
+			'db_pass' => $password,
+			'db_name' => $name
+
 		];
 		echo json_encode($params) . "\n";
 	}
