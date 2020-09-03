@@ -41,10 +41,10 @@ class DumpWikiForUCP extends Maintenance {
 		if (!$domain) {
 			throw new Exception("No domain found. Set --domain to a valid domain.");
 		}
-		$wiki = Wiki::loadFromDomain($domain);
 		if (!$internal) {
 			$this->enableMaintenance($domain);
 		}
+		$wiki = Wiki::loadFromDomain($domain);
 		// get the DB host name, user and password to be used by mysqldump
 		$info = $wiki->getDatabase();
 		$command = Shell::command([
