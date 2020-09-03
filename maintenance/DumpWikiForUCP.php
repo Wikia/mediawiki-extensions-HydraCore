@@ -27,6 +27,7 @@ class DumpWikiForUCP extends Maintenance {
 		$this->requireExtension('DynamicSettings');
 		$this->DIR = dirname(__DIR__) . '/maintenance';
 		$this->addOption('domain', 'The wiki to run against', true, true);
+		$this->addOption('internal', 'Run in internal test mode', true, true);
 	}
 
 	/**
@@ -36,17 +37,20 @@ class DumpWikiForUCP extends Maintenance {
 	 */
 	public function execute() {
 		$domain = $this->getOption('domain');
+		$internal = $this->getOption('internal', false);
 		if (!$domain) {
 			throw new Exception("No domain found. Set --domain to a valid domain.");
 		}
 		$wiki = Wiki::loadFromDomain($domain);
-		$this->enableMaintenance($domain);
+		if (!$internal) {
+			$this->enableMaintenance($domain);
+		}
 		// get the DB host name, user and password to be used by mysqldump
 		$info = $wiki->getDatabase();
 		$command = Shell::command([
 			$this->DIR . "/exportDump.sh",
 		])
-			->params("-h{$info["db_server"]}")
+			->params("-h{$info["db_server_replica"]}")
 			->params("-u{$info["db_user"]}")
 			->params("-p{$info["db_password"]}")
 			->params("-d{$info["db_name"]}")
