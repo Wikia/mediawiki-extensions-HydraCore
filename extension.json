@@ -24,6 +24,7 @@
 			"autopatrol": true,
 			"block": true,
 			"blockemail": true,
+			"checkuser": true,
 			"createpage": true,
 			"createtalk": true,
 			"delete": true,
