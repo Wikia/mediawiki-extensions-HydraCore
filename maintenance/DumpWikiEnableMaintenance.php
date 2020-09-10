@@ -2,7 +2,7 @@
 /**
  * Fandom Inc.
  * HydraAuth
- * Handle setting read-only, waiting for slaves, and dumping the wiki
+ * Handle setting read-only
  *
  * @package   HydraCore
  * @author    Samuel Hilson
@@ -14,16 +14,14 @@
 require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
 
 use DynamicSettings\Sites;
-use DynamicSettings\Wiki;
-use MediaWiki\Shell\Shell;
 
-class DumpWikiForUCP extends Maintenance {
+class DumpWikiEnableMaintenance extends Maintenance {
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->addDescription('Handle setting read-only, waiting for slaves, and dumping the wiki');
+		$this->addDescription('Handle setting read-only');
 		$this->requireExtension('DynamicSettings');
 		$this->DIR = dirname(__DIR__) . '/maintenance';
 		$this->addOption('domain', 'The wiki to run against', true, true);
@@ -39,28 +37,9 @@ class DumpWikiForUCP extends Maintenance {
 		if (!$domain) {
 			throw new Exception("No domain found. Set --domain to a valid domain.");
 		}
-		$wiki = Wiki::loadFromDomain($domain);
-		$this->enableMaintenance($domain);
-		// get the DB host name, user and password to be used by mysqldump
-		$info = $wiki->getDatabase();
-		$command = Shell::command([
-			$this->DIR . "/exportDump.sh",
-		])
-			->params("-h{$info["db_server"]}")
-			->params("-u{$info["db_user"]}")
-			->params("-p{$info["db_password"]}")
-			->params("-d{$info["db_name"]}")
-			->limits([
-				'time' => 0,
-				'memory' => 0,
-				'filesize' => 0
-			]);
 
-		$result = $command->execute();
-		if ($result->getExitCode() !== 0) {
-			$this->error($result->getStderr() . "\n");
-			throw new Exception("Unable to generate a SQL dump of '{$domain}' (using {$info['db_server']})");
-		}
+		$this->enableMaintenance($domain);
+
 		return true;
 	}
 
@@ -81,5 +60,5 @@ class DumpWikiForUCP extends Maintenance {
 	}
 }
 
-$maintClass = DumpWikiForUCP::class;
+$maintClass = DumpWikiEnableMaintenance::class;
 require_once RUN_MAINTENANCE_IF_MAIN;
