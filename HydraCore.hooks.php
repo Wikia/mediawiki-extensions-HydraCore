@@ -101,14 +101,11 @@ class HydraCoreHooks {
 	 * 
 	 * @param Title &$title
 	 * @param string &$url
-	 * @param string $query
 	 */
-	static public function onGetLocalURL(Title &$title, string &$url, $query) {
+	static public function onGetLocalURLArticle(Title &$title, string &$url) {
 		global $wgServer;
 
-		$interwiki = MediaWikiServices::getInstance()->getInterwikiLookup()->fetch( $title->mInterwiki );
-
-		if (!$interwiki && strpos( $url, '//' ) === 0) {
+		if (strpos( $url, '//' ) === 0) {
 			$url = $wgServer . $url;
 		}
 	}

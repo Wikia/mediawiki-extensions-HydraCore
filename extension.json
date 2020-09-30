@@ -152,7 +152,7 @@
 		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
 		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
 		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged",
-		"GetLocalURL": "HydraCoreHooks::onGetLocalURL"
+		"GetLocalURL::Article": "HydraCoreHooks::onGetLocalURLArticle"
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
