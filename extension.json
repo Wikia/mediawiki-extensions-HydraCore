@@ -151,7 +151,8 @@
 		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit",
 		"UserAddGroup": "HydraCoreHooks::onUserAddGroup",
 		"UserEffectiveGroups": "HydraCoreHooks::onUserEffectiveGroups",
-		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged"
+		"UserGroupsChanged": "HydraCoreHooks::onUserGroupsChanged",
+		"GetLocalURL::Article": "HydraCoreHooks::onGetLocalURLArticle"
 	},
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"

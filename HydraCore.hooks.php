@@ -97,6 +97,20 @@ class HydraCoreHooks {
 	}
 
 	/**
+	 * Hook to fix open redirects when $wgArticlePath is /$1
+	 * 
+	 * @param Title &$title
+	 * @param string &$url
+	 */
+	static public function onGetLocalURLArticle(Title &$title, string &$url) {
+		global $wgServer;
+
+		if (strpos( $url, '//' ) === 0) {
+			$url = $wgServer . $url;
+		}
+	}
+
+	/**
 	 * Setup all the parser functions
 	 * @param	Parser	object
 	 */
