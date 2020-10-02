@@ -1,4 +1,7 @@
 <?php
+
+use MediaWiki\MediaWikiServices;
+
 /**
  * Collection of basic utility functions
  * @author Noah Manneschmidt
@@ -212,39 +215,37 @@ class HydraCore {
 	 * @return	string	String Image URL.
 	 */
 	static public function getWikiImageUrlFromMercury($siteKey, $size = "avatar") {
-		global $wgScriptPath, $wgMercuryAPIKey;
+		global $wgExtensionAssetsPath, $wgMercuryAPIKey;
 
-		$redis = \RedisCache::getClient('cache');
-		$redisKey = 'wikiavatar:'.$siteKey.':'.$size;
-		$returnValue = $wgScriptPath.'/extensions/HydraCore/images/wikiplaceholder.png';
+		$placeholderImageUrl = $wgExtensionAssetsPath.'/HydraCore/images/wikiplaceholder.png';
 
-		if (!empty($siteKey)) {
-			// Try to use a cached value from Redis.
-			if ($redis !== false) {
-				$existUrl = $redis->get($redisKey);
-				if (!empty($existUrl)) {
-					return $existUrl;
-				}
-			}
-
-			// fallback to direct lookup from the gamepedia.com api
-			$result = \Http::post('https://www.gamepedia.com/api/get-avatar?apikey='.urlencode($wgMercuryAPIKey).'&wikiMd5='.urlencode($siteKey));
-			$json = json_decode($result, true);
-
-			if (!empty($json) ) {
-				if (isset($json['BannerAvatarUrl']) && $size == "large") {
-					$returnValue = $json['BannerAvatarUrl'];
-				} elseif (isset($json['AvatarUrl'])) {
-					$returnValue = $json['AvatarUrl'];
-				}
-			}
+		if (empty($siteKey)) {
+			return $placeholderImageUrl;
 		}
 
-		// If we are returning a URL, cache it
-		if ($redis !== false && substr($returnValue, 0, 8) === "https://") {
-			$redis->setEx($redisKey, 86400, $returnValue); //Expire in twenty-four hours.
-		}
+		$cacheKey = 'wikiavatar:'.$siteKey.':'.$size;
+		$objectCache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+		return $objectCache->getWithSetCallback(
+			$objectCache->makeGlobalKey(__CLASS__, $cacheKey),
+			86400,
+			function () use ($siteKey, $size, $wgMercuryAPIKey) {
+				$result = \Http::post(
+					'https://www.gamepedia.com/api/get-avatar?apikey='
+					.urlencode($wgMercuryAPIKey)
+					.'&wikiMd5='
+					.urlencode($siteKey)
+				);
+				$json = json_decode($result, true);
 
-		return $returnValue;
+				if (!empty($json) ) {
+					if (isset($json['BannerAvatarUrl']) && $size == "large") {
+						return $json['BannerAvatarUrl'];
+					} elseif (isset($json['AvatarUrl'])) {
+						return $json['AvatarUrl'];
+					}
+				}
+				return false;
+			}
+		) ?: $placeholderImageUrl;
 	}
 }
