@@ -95,18 +95,26 @@ abstract class HydraApiBase extends ApiBase {
 		return $childParams;
 	}
 
+	private function getActionParam($param) {
+		$action = $this->getMain()->getVal('do');
+		$params = $this->getActions()[$action] ?? [];
+		return $params[$param] ?? null;
+	}
+
 	public function mustBePosted() {
 		$do = $this->getMain()->getVal('do');
 		if ($do) {
-			return $this->getActions()[$this->getMain()->getVal('do')]['postRequired'];
+			return $this->getActionParam('postRequired') ?: false;
 		}
+		return false;
 	}
 
 	public function needsToken() {
 		$do = $this->getMain()->getVal('do');
 		if ($do) {
-			return $this->getActions()[$this->getMain()->getVal('do')]['tokenRequired'] ? "csrf" : false;
+			return $this->getActionParam('tokenRequired') ? 'csrf' : false;
 		}
+		return false;
 	}
 
 	public function getTokenSalt() {
