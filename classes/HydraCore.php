@@ -203,7 +203,7 @@ class HydraCore {
 	 * @return boolean
 	 */
 	static public function isMobileSkin(Skin $skin) {
-		return $skin->getSkinName() == 'minerva';
+		return $skin->getSkinName() == 'minerva' || $skin->getSkinName() == 'fandommobile';
 	}
 
 	/**
