@@ -26,8 +26,6 @@ class SpecialPage extends \SpecialPage {
 		$this->wgRequest = $this->getRequest();
 		$this->wgUser    = $this->getUser();
 		$this->output    = $this->getOutput();
-
-		$this->DB = wfGetDB(DB_MASTER);
 	}
 
 	/**
