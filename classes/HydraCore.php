@@ -110,12 +110,22 @@ class HydraCore {
 		$key =  wfMemcKey( 'NumberOfContributors');
 		$hit = $wgMemc->get( $key );
 		if (!$hit) {
+			if (class_exists(\ActorMigration::class)) {
+				$actorQuery = \ActorMigration::newMigration()->getJoin('rev_user');
+				$userField = $actorQuery['fields']['rev_user'];
+			} else {
+				$actorQuery = ['tables' => [], 'joins' => []];
+				$userField = 'rev_user';
+			}
+
 			$db = wfGetDB(DB_SLAVE);
 			$hit = $db->selectField(
-				'revision',
-				'count(distinct rev_user)',
+				['revision'] + $actorQuery['tables'],
+				"count(distinct $userField)",
 				'',
-				__METHOD__
+				__METHOD__,
+				[],
+				$actorQuery['joins']
 			);
 			$wgMemc->set($key, $hit, 3600);
 		}
