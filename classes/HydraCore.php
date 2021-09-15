@@ -1,6 +1,5 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
 
 /**
  * Collection of basic utility functions
@@ -214,48 +213,5 @@ class HydraCore {
 	 */
 	static public function isMobileSkin(Skin $skin) {
 		return $skin->getSkinName() == 'minerva' || $skin->getSkinName() == 'fandommobile';
-	}
-
-	/**
-	 * Get the wiki image set in Mercury for a given wiki site key.
-	 *
-	 * @access	public
-	 * @param	string	Site Key
-	 * @param 	string 	Desired size of image
-	 * @return	string	String Image URL.
-	 */
-	static public function getWikiImageUrlFromMercury($siteKey, $size = "avatar") {
-		global $wgExtensionAssetsPath, $wgMercuryAPIKey;
-
-		$placeholderImageUrl = $wgExtensionAssetsPath.'/HydraCore/images/wikiplaceholder.png';
-
-		if (empty($siteKey)) {
-			return $placeholderImageUrl;
-		}
-
-		$cacheKey = 'wikiavatar:'.$siteKey.':'.$size;
-		$objectCache = MediaWikiServices::getInstance()->getMainWANObjectCache();
-		return $objectCache->getWithSetCallback(
-			$objectCache->makeGlobalKey(__CLASS__, $cacheKey),
-			86400,
-			function () use ($siteKey, $size, $wgMercuryAPIKey) {
-				$result = \Http::post(
-					'https://www.gamepedia.com/api/get-avatar?apikey='
-					.urlencode($wgMercuryAPIKey)
-					.'&wikiMd5='
-					.urlencode($siteKey)
-				);
-				$json = json_decode($result, true);
-
-				if (!empty($json) ) {
-					if (isset($json['BannerAvatarUrl']) && $size == "large") {
-						return $json['BannerAvatarUrl'];
-					} elseif (isset($json['AvatarUrl'])) {
-						return $json['AvatarUrl'];
-					}
-				}
-				return false;
-			}
-		) ?: $placeholderImageUrl;
 	}
 }
