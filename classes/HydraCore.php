@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
 
 /**
  * Collection of basic utility functions
@@ -12,17 +13,17 @@ class HydraCore {
 	 * Key collisions will mess stuff up
 	 * If the target key does not exist, content will be inserted at the end
 	 *
-	 * @param	array	will be modified with new content inserted
-	 * @param	mixed	string or int before which the new content will be inserted
-	 * @param	array	an array containing content to insert at the new index
-	 * @return	void
+	 * @param array    will be modified with new content inserted
+	 * @param mixed    string or int before which the new content will be inserted
+	 * @param array    an array containing content to insert at the new index
+	 * @return void
 	 */
-	static public function array_insert_before_key(&$target, $targetKey, $insertContent) {
-		$insertPoint = array_search($targetKey, array_keys($target));
+	public static function array_insert_before_key( &$target, $targetKey, $insertContent ) {
+		$insertPoint = array_search( $targetKey, array_keys( $target ) );
 		$target = array_merge(
-			array_slice($target, 0, $insertPoint),
+			array_slice( $target, 0, $insertPoint ),
 			$insertContent,
-			array_slice($target, $insertPoint)
+			array_slice( $target, $insertPoint )
 		);
 	}
 
@@ -45,41 +46,41 @@ class HydraCore {
 	 *     2 => [f]
 	 *   ]
 	 *
-	 * @param  array
-	 * @param  int    [optional] maximum depth to recurse (default: 10)
+	 * @param array
+	 * @param int    [optional] maximum depth to recurse (default: 10)
 	 * @return array
 	 */
-	static public function array_keys_recursive($target, $maxDepth = 10) {
+	public static function array_keys_recursive( $target, $maxDepth = 10 ) {
 		$allKeys = [];
-		self::collect_keys_recursive($target, $allKeys, 0, $maxDepth);
+		self::collect_keys_recursive( $target, $allKeys, 0, $maxDepth );
 		return $allKeys;
 	}
 
 	/**
 	 * Helper function for array_keys_recursive. Inserts found keys into $result at appropriate depth index.
 	 *
-	 * @param  array  from which keys will be extracted
-	 * @param  array  to which found keys will be saved
-	 * @param  int    current depth at which the function is operating
-	 * @param  int    maximum depth to which the funciton should recurse
+	 * @param array  from which keys will be extracted
+	 * @param array  to which found keys will be saved
+	 * @param int    current depth at which the function is operating
+	 * @param int    maximum depth to which the funciton should recurse
 	 * @return void
 	 */
-	static private function collect_keys_recursive($target, &$result, $depth, $maxDepth) {
+	private static function collect_keys_recursive( $target, &$result, $depth, $maxDepth ) {
 		// nothing to do if we are at the bottom
-		if ($depth > $maxDepth || empty($target)) {
+		if ( $depth > $maxDepth || empty( $target ) ) {
 			return $result;
 		}
 
 		// get keys at current depth
-		if (!isset($result[$depth])) {
+		if ( !isset( $result[$depth] ) ) {
 			$result[$depth] = [];
 		}
-		$result[$depth] = array_merge($result[$depth], array_keys($target));
+		$result[$depth] = array_merge( $result[$depth], array_keys( $target ) );
 
 		// get keys at farther depths
-		foreach ($target as $child) {
-			if (is_array($child)) {
-				self::collect_keys_recursive($child, $result, $depth+1, $maxDepth);
+		foreach ( $target as $child ) {
+			if ( is_array( $child ) ) {
+				self::collect_keys_recursive( $child, $result, $depth + 1, $maxDepth );
 			}
 		}
 	}
@@ -93,89 +94,127 @@ class HydraCore {
 	 * @param array   extra classes to add to the element
 	 * @return string html fragment
 	 */
-	static public function awesomeIcon($name, array $extraClasses = array(), array $extraAttribs = array()) {
-		if (count($extraClasses)) {
-			$name .= ' '.implode(' ', $extraClasses);
+	public static function awesomeIcon( $name, array $extraClasses = [], array $extraAttribs = [] ) {
+		if ( count( $extraClasses ) ) {
+			$name .= ' ' . implode( ' ', $extraClasses );
 		}
-		$extraAttribs['class'] = 'fa fa-'.$name;
-		return Html::element('span', $extraAttribs);
+		$extraAttribs['class'] = 'fa fa-' . $name;
+		return Html::element( 'span', $extraAttribs );
 	}
 
 	/**
 	 * Returns the number of users who have made at least one edit on the wiki.
 	 */
-	static public function numberofcontributors() {
-		global $wgMemc;
-		$key =  wfMemcKey( 'NumberOfContributors');
-		$hit = $wgMemc->get( $key );
-		if (!$hit) {
-			if (class_exists(\ActorMigration::class)) {
-				$actorQuery = \ActorMigration::newMigration()->getJoin('rev_user');
+	public static function numberofcontributors() {
+		$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
+		$key = $cache->makeKey( 'NumberOfContributors' );
+		$hit = $cache->get( $key );
+		if ( !$hit ) {
+			if ( class_exists( \ActorMigration::class ) ) {
+				$actorQuery = \ActorMigration::newMigration()->getJoin( 'rev_user' );
 				$userField = $actorQuery['fields']['rev_user'];
 			} else {
-				$actorQuery = ['tables' => [], 'joins' => []];
+				$actorQuery = [ 'tables' => [], 'joins' => [] ];
 				$userField = 'rev_user';
 			}
 
-			$db = wfGetDB(DB_SLAVE);
+			$db = wfGetDB( DB_REPLICA );
 			$hit = $db->selectField(
-				['revision'] + $actorQuery['tables'],
+				[ 'revision' ] + $actorQuery['tables'],
 				"count(distinct $userField)",
 				'',
 				__METHOD__,
 				[],
 				$actorQuery['joins']
 			);
-			$wgMemc->set($key, $hit, 3600);
+			$cache->set( $key, $hit, 3600 );
 		}
 		return $hit;
+	}
+
+	/**
+	 * Helper function that returns generatePagination() already formatted in the default pagination template.
+	 * @param integer    Total number of items to be paginated.
+	 * @param integer    [Optional] How many items to display per page.
+	 * @param integer    [Optional] Start Position
+	 * @param integer    [Optional] Number of extra page numbers to show.
+	 * @param array    [Optional] Array of extra URL arguments to append to pagination URLs.
+	 * @param string    [Optional] Base URL to use.
+	 * @param boolean    [Optional] Show item range next to pagination.
+	 * @return string Built Pagination HTML
+	 */
+	public static function generatePaginationHtml(
+		Title $title,
+		int $totalItems,
+		int $itemsPerPage = 100,
+		int $itemStart = 0,
+		int $extraPages = 4,
+		array $extraArguments = [],
+		bool $showTotal = true
+	): string {
+		$pagination = self::generatePagination( $totalItems, $itemsPerPage, $itemStart, $extraPages );
+		$pagination['extra'] = $extraArguments;
+		$pagination['showTotal'] = $showTotal;
+		$templates = new TemplatePagination();
+		return $templates->pagination( $pagination, $title );
 	}
 
 	/**
 	 * Generates page numbers.
 	 * Call this function directly if a custom pagination template is required otherwise use generatePaginationHtml().
 	 *
-	 * @access	public
-	 * @param	integer	Total number of items to be paginated.
-	 * @param	integer	How many items to display per page.
-	 * @param	integer	Start Position
-	 * @param	integer	Number of extra page numbers to show.
-	 * @return	array	Generated array of pagination information.
+	 * @param integer    Total number of items to be paginated.
+	 * @param integer    How many items to display per page.
+	 * @param integer    Start Position
+	 * @param integer    Number of extra page numbers to show.
+	 * @return array Generated array of pagination information.
 	 */
-	static public function generatePagination($totalItems, $itemsPerPage = 100, $itemStart = 0, $extraPages = 4) {
-		if ($totalItems < 1) {
-			return false;
+	public static function generatePagination( $totalItems, $itemsPerPage = 100, $itemStart = 0, $extraPages = 4 ) {
+		if ( $totalItems < 1 ) {
+			throw new InvalidArgumentException( 'No items provided' );
 		}
 
-		$currentPage	= floor($itemStart / $itemsPerPage) + 1;
-		$totalPages		= ceil($totalItems / $itemsPerPage);
-		$lastStart		= floor($totalItems / $itemsPerPage) * $itemsPerPage;
+		$currentPage = floor( $itemStart / $itemsPerPage ) + 1;
+		$totalPages = ceil( $totalItems / $itemsPerPage );
+		$lastStart = floor( $totalItems / $itemsPerPage ) * $itemsPerPage;
 
-		$pagination['first']	= ['st' => 0, 'selected' => false];
-		$pagination['last']		= ['st' => $lastStart, 'selected' => false];
-		$pagination['stats']	= [
+		$pagination['first'] = [ 'st' => 0, 'selected' => false ];
+		$pagination['last'] = [ 'st' => $lastStart, 'selected' => false ];
+		$itemsEnd = $itemStart +
+					( $itemsPerPage -
+					  ( $currentPage * $itemsPerPage - min( $currentPage * $itemsPerPage, $totalItems ) )
+					);
+		$pagination['stats'] = [
 			'pages' => $totalPages,
 			'total' => $totalItems,
 			'current_page' => $currentPage,
 			'items_start' => $itemStart + 1,
-			'items_end' => $itemStart + ($itemsPerPage - ($currentPage * $itemsPerPage - min($currentPage * $itemsPerPage, $totalItems)))
+			'items_end' => $itemsEnd,
 		];
 
-		$pageStart	= min($currentPage, $currentPage - ($extraPages / 2));
-		$pageEnd	= min($totalPages, $currentPage + ($extraPages / 2));
+		$pageStart = min( $currentPage, $currentPage - ( $extraPages / 2 ) );
+		$pageEnd = min( $totalPages, $currentPage + ( $extraPages / 2 ) );
 
-		if ($pageStart <= 1) {
+		if ( $pageStart <= 1 ) {
 			$pageStart = 1;
 			$pageEnd = $pageStart + $extraPages;
 		}
-		if ($pageEnd >= $totalPages) {
+		if ( $pageEnd >= $totalPages ) {
 			$pageEnd = $totalPages;
-			$pageStart = max($pageEnd - $extraPages, ($currentPage - ($extraPages / 2)) - (($extraPages / 2) - ($pageEnd - $currentPage)));
+			$pageStart =
+				max(
+					$pageEnd - $extraPages,
+					( $currentPage - ( $extraPages / 2 ) ) - ( ( $extraPages / 2 ) - ( $pageEnd - $currentPage ) )
+				);
 		}
 
-		for ($i = $pageStart; $i <= $pageEnd; $i++) {
-			if ($i > 0) {
-				$pagination['pages'][$i] = ['st' => ($i * $itemsPerPage) - $itemsPerPage, 'selected' => ($i == $currentPage ? true : false)];
+		for ( $i = $pageStart; $i <= $pageEnd; $i++ ) {
+			if ( $i > 0 ) {
+				$pagination['pages'][$i] =
+					[
+						'st' => ( $i * $itemsPerPage ) - $itemsPerPage,
+						'selected' => $i == $currentPage,
+					];
 			}
 		}
 
@@ -183,35 +222,9 @@ class HydraCore {
 	}
 
 	/**
-	 * Helper function that returns generatePagination() already formatted in the default pagination template.
-	 *
-	 * @access	public
-	 * @param	integer	Total number of items to be paginated.
-	 * @param	integer	[Optional] How many items to display per page.
-	 * @param	integer	[Optional] Start Position
-	 * @param	integer	[Optional] Number of extra page numbers to show.
-	 * @param	array	[Optional] Array of extra URL arguments to append to pagination URLs.
-	 * @param	string	[Optional] Base URL to use.
-	 * @param	boolean	[Optional] Show item range next to pagination.
-	 * @return	string	Built Pagination HTML
-	 */
-	static public function generatePaginationHtml(Title $title, int $totalItems, int $itemsPerPage = 100, int $itemStart = 0, int $extraPages = 4, array $extraArguments = [], bool $showTotal = true) {
-		$pagination = self::generatePagination($totalItems, $itemsPerPage, $itemStart, $extraPages);
-		$pagination['extra'] = $extraArguments;
-		$pagination['showTotal'] = $showTotal;
-		$templates = new TemplatePagination;
-		$html = $templates->pagination($pagination, $title);
-
-		return $html;
-	}
-
-	/**
 	 * The real check if we are using a mobile skin
-	 *
-	 * @param Skin
-	 * @return boolean
 	 */
-	static public function isMobileSkin(Skin $skin) {
+	public static function isMobileSkin( Skin $skin ): bool {
 		return $skin->getSkinName() == 'minerva' || $skin->getSkinName() == 'fandommobile';
 	}
 }
