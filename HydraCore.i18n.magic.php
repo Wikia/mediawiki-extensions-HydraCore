@@ -15,5 +15,5 @@
 $magicWords = [];
 
 $magicWords['en'] = [
-	'numberofcontributors' => [0, 'numberofcontributors']
+	'numberofcontributors' => [ 0, 'numberofcontributors' ],
 ];

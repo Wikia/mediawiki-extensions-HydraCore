@@ -141,7 +141,6 @@
 		"APIGetDescriptionMessages": "HydraCoreHooks::onAPIGetDescriptionMessages",
 		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages",
 		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
-		"CanIPUseHTTPS": "HydraCoreHooks::onCanIPUseHTTPS",
 		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit"
 	},
 	"ConfigRegistry": {
