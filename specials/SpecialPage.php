@@ -51,4 +51,8 @@ class SpecialPage extends \SpecialPage {
 	public function isListed() {
 		return parent::isListed() && $this->userCanExecute( $this->getUser() );
 	}
+
+	public final function doesWrites() {
+		return true;
+	}
 }
