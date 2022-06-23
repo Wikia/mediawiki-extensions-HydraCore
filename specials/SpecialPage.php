@@ -34,7 +34,7 @@ class SpecialPage extends \SpecialPage {
 		$this->wgRequest = $this->getRequest();
 		$this->wgUser    = $this->getUser();
 		$this->output    = $this->getOutput();
-		$this->DB = wfGetDB( DB_PRIMARY );
+		$this->DB = wfGetDB( DB_REPLICA );
 	}
 
 	/**
@@ -50,9 +50,5 @@ class SpecialPage extends \SpecialPage {
 	// only list when we want it listed, and when user is allowed to use
 	public function isListed() {
 		return parent::isListed() && $this->userCanExecute( $this->getUser() );
-	}
-
-	public final function doesWrites() {
-		return true;
 	}
 }
