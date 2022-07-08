@@ -12,8 +12,6 @@
  */
 namespace HydraCore;
 
-use Wikimedia\Rdbms\DBConnRef;
-
 class SpecialPage extends \SpecialPage {
 	/** @var \WebRequest */
 	protected $wgRequest;
@@ -21,8 +19,6 @@ class SpecialPage extends \SpecialPage {
 	protected $wgUser;
 	/** @var \OutputPage */
 	protected $output;
-	/**@var DBConnRef */
-	protected $DB;
 
 	/**
 	 * @param string $name Name of the special page
@@ -34,7 +30,6 @@ class SpecialPage extends \SpecialPage {
 		$this->wgRequest = $this->getRequest();
 		$this->wgUser    = $this->getUser();
 		$this->output    = $this->getOutput();
-		$this->DB = wfGetDB( DB_PRIMARY );
 	}
 
 	/**
