@@ -152,6 +152,9 @@ class HydraCore {
 		array $extraArguments = [],
 		bool $showTotal = true
 	): string {
+		if ( $totalItems < 1 ) {
+			return '';
+		}
 		$pagination = self::generatePagination( $totalItems, $itemsPerPage, $itemStart, $extraPages );
 		$pagination['extra'] = $extraArguments;
 		$pagination['showTotal'] = $showTotal;
