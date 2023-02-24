@@ -52,7 +52,13 @@
 		"font_upload"
 	],
 	"SpecialPages": {
-		"FontManager": "SpecialFontManager"
+		"FontManager": {
+			"class": "SpecialFontManager",
+			"services": [
+				"ConfigFactory",
+				"HydraCore\\Font"
+			]
+		}
 	},
 	"MessagesDirs": {
 		"HydraCore": [
@@ -64,7 +70,7 @@
 		"SpecialHydraCore": "HydraCore.alias.php"
 	},
 	"AutoloadClasses": {
-		"HydraCoreHooks": "HydraCore.hooks.php",
+		"HydraCoreHooks": "HydraCoreHooks.php",
 		"HydraCore": "classes/HydraCore.php",
 		"HydraApiBase": "classes/HydraApiBase.php",
 		"HydraCore\\Font": "classes/Font.php",
@@ -137,12 +143,22 @@
 		"HydraCoreHooks::addLateHooks"
 	],
 	"Hooks": {
-		"APIGetAllowedParams": "HydraCoreHooks::onAPIGetAllowedParams",
-		"APIGetDescriptionMessages": "HydraCoreHooks::onAPIGetDescriptionMessages",
-		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages",
+		"APIAfterExecute": "main",
+		"APIGetAllowedParams": "main",
+		"APIGetDescriptionMessages": "main",
+		"APIGetParamDescriptionMessages": "main",
 		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
-		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit"
+		"ParserFirstCallInit": "main"
 	},
+	"HookHandlers": {
+		"main": {
+			"class": "HydraCoreHooks",
+			"services": [
+				"HydraCore"
+			]
+		}
+	},
+	"ServiceWiringFiles": ["ServiceWiring.php"],
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
 	},

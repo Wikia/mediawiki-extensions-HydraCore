@@ -1,5 +1,11 @@
 <?php
 
+use MediaWiki\Api\Hook\APIAfterExecuteHook;
+use MediaWiki\Api\Hook\APIGetAllowedParamsHook;
+use MediaWiki\Api\Hook\APIGetDescriptionMessagesHook;
+use MediaWiki\Api\Hook\APIGetParamDescriptionMessagesHook;
+use MediaWiki\Hook\ParserFirstCallInitHook;
+
 /**
  * Curse Inc.
  * HydraCore
@@ -12,7 +18,16 @@
  * @link        https://gitlab.com/hydrawiki
  *
  */
-class HydraCoreHooks {
+class HydraCoreHooks implements
+	APIGetAllowedParamsHook,
+	APIGetDescriptionMessagesHook,
+	APIGetParamDescriptionMessagesHook,
+	ParserFirstCallInitHook,
+	APIAfterExecuteHook
+{
+
+	public function __construct(private HydraCore $core) {
+	}
 
 	/**
 	 * Force X-Mobile header.
@@ -25,16 +40,8 @@ class HydraCoreHooks {
 	/**
 	 * Setup all the parser functions
 	 */
-	public static function onParserFirstCallInit( Parser &$parser ): void {
-		$parser->setFunctionHook( 'numberofcontributors', 'HydraCore::numberofcontributors' );
-	}
-
-	/**
-	 * Add hooks late so that they are ensured to come last.
-	 */
-	public static function addLateHooks(): void {
-		global $wgHooks;
-		$wgHooks['APIAfterExecute'][] = 'HydraCoreHooks::onAPIAfterExecute';
+	public function onParserFirstCallInit( $parser ): void {
+		$parser->setFunctionHook( 'numberofcontributors', [$this->core, 'numberOfContributors'] );
 	}
 
 	/**
@@ -44,7 +51,7 @@ class HydraCoreHooks {
 	 * @param ApiBase &$module
 	 * @param array|bool &$params
 	 */
-	public static function onAPIGetAllowedParams( ApiBase &$module, &$params ): void {
+	public function onAPIGetAllowedParams( $module, &$params, $flags ): void {
 		if ( $module->getModuleName() == 'parse' ) {
 			$params['withads'] = false;
 		}
@@ -57,7 +64,7 @@ class HydraCoreHooks {
 	 * @param ApiBase $module
 	 * @param array|bool &$msgs
 	 */
-	public static function onAPIGetParamDescriptionMessages( ApiBase $module, &$msgs ): void {
+	public function onAPIGetParamDescriptionMessages( $module, &$msgs ): void {
 		if ( $module->getModuleName() == 'parse' ) {
 			$msgs['withads'] = [ $module->msg( 'api-parse-withads-desc' ) ];
 		}
@@ -70,7 +77,7 @@ class HydraCoreHooks {
 	 * @param ApiBase $module
 	 * @param array|string &$msgs
 	 */
-	public static function onAPIGetDescriptionMessages( ApiBase $module, &$msgs ): void {
+	public function onAPIGetDescriptionMessages( $module, &$msgs ): void {
 		if ( $module->getModuleName() == 'parse' ) {
 			$msgs[] = $module->msg( 'api-parse-modified-hydracore' );
 		}
@@ -82,7 +89,7 @@ class HydraCoreHooks {
 	 * @param ApiBase &$module
 	 * @throws ApiUsageException
 	 */
-	public static function onAPIAfterExecute( ApiBase &$module ): void {
+	public function onAPIAfterExecute( $module ): void {
 		if ( $module->getModuleName() == 'parse' ) {
 			$data = $module->getResult()->getResultData();
 			$params = $module->extractRequestParams();

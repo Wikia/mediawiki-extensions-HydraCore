@@ -11,7 +11,6 @@
 
 require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
 
-use MediaWiki\MediaWikiServices;
 
 /**
  * Maintenance script to renumber actors in the wiki database to match the

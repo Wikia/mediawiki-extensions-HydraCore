@@ -166,7 +166,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 			"Beginning cleanup of $table\n"
 		);
 
-		$dbw = $this->getDB(DB_MASTER);
+		$dbw = $this->getDB(DB_PRIMARY);
 		$next = '1=1';
 		$countAssigned = 0;
 		$countNamed = 0;

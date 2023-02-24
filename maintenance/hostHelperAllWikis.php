@@ -50,7 +50,7 @@ class hostHelperAllWikis extends Maintenance {
 		//This will update the master wiki.
 		$this->runWiki();
 
-		$db = wfGetDB(DB_MASTER);
+		$db = wfGetDB(bannernotifications-mediawiki-139-before-migration);
 
 		$results = $db->select(
 			[

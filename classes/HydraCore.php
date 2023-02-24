@@ -1,6 +1,7 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
+use Wikimedia\Rdbms\ILoadBalancer;
+
 
 /**
  * Collection of basic utility functions
@@ -8,6 +9,12 @@ use MediaWiki\MediaWikiServices;
  */
 
 class HydraCore {
+	public function __construct(
+		private WANObjectCache $cache,
+		private ILoadBalancer $loadBalancer
+	) {
+	}
+
 	/**
 	 * Inserts new elements into a string indexed array at a specific point
 	 * Key collisions will mess stuff up
@@ -105,10 +112,9 @@ class HydraCore {
 	/**
 	 * Returns the number of users who have made at least one edit on the wiki.
 	 */
-	public static function numberofcontributors() {
-		$cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
-		$key = $cache->makeKey( 'NumberOfContributors' );
-		$hit = $cache->get( $key );
+	public function numberOfContributors() {
+		$key = $this->cache->makeKey( 'NumberOfContributors' );
+		$hit = $this->cache->get( $key );
 		if ( !$hit ) {
 			if ( class_exists( \ActorMigration::class ) ) {
 				$actorQuery = \ActorMigration::newMigration()->getJoin( 'rev_user' );
@@ -118,7 +124,7 @@ class HydraCore {
 				$userField = 'rev_user';
 			}
 
-			$db = wfGetDB( DB_REPLICA );
+			$db = $this->loadBalancer->getConnection( DB_REPLICA );
 			$hit = $db->selectField(
 				[ 'revision' ] + $actorQuery['tables'],
 				"count(distinct $userField)",
@@ -127,7 +133,7 @@ class HydraCore {
 				[],
 				$actorQuery['joins']
 			);
-			$cache->set( $key, $hit, 3600 );
+			$this->cache->set( $key, $hit, 3600 );
 		}
 		return $hit;
 	}

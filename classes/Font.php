@@ -14,11 +14,15 @@
 
 namespace HydraCore;
 
-use MediaWiki\MediaWikiServices;
+use ConfigFactory;
 
 class Font {
 
 	private $data = [];
+
+	public function __construct(private ConfigFactory $configFactory)
+	{
+	}
 
 	/**
 	 * Load a new object from a database row.
@@ -54,8 +58,7 @@ class Font {
 	 * @return mixed String File Type Extension or False for no File Type.
 	 */
 	public function getFileType() {
-		$ceFontTypes = MediaWikiServices::getInstance()
-			->getConfigFactory()->makeConfig( 'hydracore' )->get( 'CEFontTypes' );
+		$ceFontTypes = $this->configFactory->makeConfig( 'hydracore' )->get( 'CEFontTypes' );
 
 		$lastDot = strrpos( $this->data['file_name'], '.' );
 		if ( $lastDot !== false ) {
