@@ -158,7 +158,7 @@ class Font {
 	 * @return string Font URL
 	 */
 	public function getUrl() {
-		$ceFontUrl = \ConfigFactory::getDefaultInstance()->makeConfig( 'hydracore' )->get( 'CEFontUrl' );
+		$ceFontUrl = $this->configFactory->makeConfig('hydracore')->get('CEFontUrl');
 
 		return rtrim( $ceFontUrl, DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . $this->getFileName();
 	}

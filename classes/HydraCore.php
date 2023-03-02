@@ -116,13 +116,8 @@ class HydraCore {
 		$key = $this->cache->makeKey( 'NumberOfContributors' );
 		$hit = $this->cache->get( $key );
 		if ( !$hit ) {
-			if ( class_exists( \ActorMigration::class ) ) {
-				$actorQuery = \ActorMigration::newMigration()->getJoin( 'rev_user' );
-				$userField = $actorQuery['fields']['rev_user'];
-			} else {
-				$actorQuery = [ 'tables' => [], 'joins' => [] ];
-				$userField = 'rev_user';
-			}
+			$actorQuery = [ 'tables' => [], 'joins' => [] ];
+			$userField = 'rev_user';
 
 			$db = $this->loadBalancer->getConnection( DB_REPLICA );
 			$hit = $db->selectField(

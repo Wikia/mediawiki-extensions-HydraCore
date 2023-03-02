@@ -13,6 +13,7 @@ require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
 
 use \DynamicSettings\Wiki;
 
+//todo this script probably has to be removed, as it has dependency with not included https://github.com/Wikia/hydra/tree/develop/extensions/DynamicSettings
 class MysqlWiki extends Maintenance {
 	/**
 	 * Constructor

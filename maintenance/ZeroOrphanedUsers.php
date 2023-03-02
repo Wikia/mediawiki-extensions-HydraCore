@@ -8,6 +8,7 @@
  * @link      https://gitlab.com/hydrawiki
 **/
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 
 require_once dirname(dirname(dirname(__DIR__))) . '/maintenance/Maintenance.php';
@@ -192,16 +193,16 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 			foreach ($res as $row) {
 				$name = $row->$nameField;
 				$userIdGiven = (int)$row->$idField;
-				$userIdTest = User::idFromName($name);
+				$services = MediaWikiServices::getInstance();
+				$userIdTest = $services->getUserIdentityLookup()->getUserIdentityByName( $name );
 				if ($userIdTest !== null) {
-					$userIdTest = intval($userIdTest);
+					$userIdTest = $userIdTest->getId();
 				}
-				$usable = User::isUsableName($name);
 				$set = [];
 				$errors = [];
 
 				if (empty($name)) {
-					$user = User::newFromId($userIdGiven);
+					$user = $services->getUserFactory()->newFromId( $userIdGiven );
 					$user->load();
 					if (!$user->getId()) {
 						$name = '@Hippopotamus';
@@ -247,7 +248,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 
 			list( $next, $display ) = $this->makeNextCond($dbw, $orderby, $row);
 			$this->output("... $display\n");
-			wfWaitForSlaves();
+			$services->getDBLoadBalancerFactory()->waitForReplication();
 		}
 
 		$this->output(

@@ -10,6 +10,8 @@
  * @link      https://gitlab.com/hydrawiki
  */
 
+use MediaWiki\MediaWikiServices;
+
 require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
 class FixMissingRevisions extends Maintenance {
 	/**
@@ -20,7 +22,7 @@ class FixMissingRevisions extends Maintenance {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Fix rev_text_id pointing to non-existent entries";
+		$this->parameters->setDescription( 'Fix rev_text_id pointing to non-existent entries' );
 	}
 
 	/**
@@ -30,8 +32,10 @@ class FixMissingRevisions extends Maintenance {
 	 * @return void
 	 */
 	public function execute() {
-		$dbw = wfGetDB(DB_MASTER);
-		$db = wfGetDB(DB_REPLICA);
+		$loadBalancer = MediaWikiServices::getInstance()
+			->getDBLoadBalancer();
+		$dbw = $loadBalancer->getMaintenanceConnectionRef( DB_PRIMARY );
+		$db = $loadBalancer->getMaintenanceConnectionRef( DB_REPLICA );
 		$results = $db->select(['revision'], ['rev_id', 'rev_text_id'], ['rev_text_id not in (select text.old_id from text)'], __METHOD__);
 
 		while ($row = $results->fetchRow()) {

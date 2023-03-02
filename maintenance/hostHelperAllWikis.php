@@ -12,8 +12,11 @@
  *
 **/
 
+use MediaWiki\MediaWikiServices;
+
 require_once(dirname(__DIR__, 3).'/maintenance/Maintenance.php');
 
+//todo this script probably has to be removed, as it has dependency with not included https://github.com/Wikia/hydra/tree/develop/extensions/DynamicSettings
 class hostHelperAllWikis extends Maintenance {
 	/**
 	 * Run in silent mode.(Suppress Output)
@@ -31,7 +34,7 @@ class hostHelperAllWikis extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->mDescription = "Invokes hostHelper.php for all wikis.";
+		$this->parameters->setDescription( 'Invokes hostHelper.php for all wikis.' );
 	}
 
 	/**
@@ -50,7 +53,9 @@ class hostHelperAllWikis extends Maintenance {
 		//This will update the master wiki.
 		$this->runWiki();
 
-		$db = wfGetDB(bannernotifications-mediawiki-139-before-migration);
+		$db = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 
 		$results = $db->select(
 			[
