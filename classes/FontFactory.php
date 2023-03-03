@@ -6,6 +6,7 @@ namespace HydraCore;
 
 use ConfigFactory;
 
+//todo seems that class not in use outside the extension. One usage in \SpecialFontManager
 class FontFactory {
 
 	public function __construct( private ConfigFactory $configFactory ) {
