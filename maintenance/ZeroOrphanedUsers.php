@@ -189,11 +189,14 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 				break;
 			}
 			$services = MediaWikiServices::getInstance();
+			$userIdentityLookup = $services->getUserIdentityLookup();
+			$userFactory = $services->getUserFactory();
 			// Update the existing rows
 			foreach ($res as $row) {
 				$name = $row->$nameField;
 				$userIdGiven = (int)$row->$idField;
-				$userIdTest = $services->getUserIdentityLookup()->getUserIdentityByName( $name );
+
+				$userIdTest = $userIdentityLookup->getUserIdentityByName( $name );
 				if ($userIdTest !== null) {
 					$userIdTest = $userIdTest->getId();
 				}
@@ -201,7 +204,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 				$errors = [];
 
 				if (empty($name)) {
-					$user = $services->getUserFactory()->newFromId( $userIdGiven );
+					$user = $userFactory->newFromId( $userIdGiven );
 					$user->load();
 					if (!$user->getId()) {
 						$name = '@Hippopotamus';
