@@ -56,7 +56,7 @@
 			"class": "SpecialFontManager",
 			"services": [
 				"ConfigFactory",
-				"HydraCore\\Font"
+				"HydraCore\\FontFactory"
 			]
 		}
 	},

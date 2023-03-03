@@ -20,29 +20,9 @@ class Font {
 
 	private $data = [];
 
-	public function __construct(private ConfigFactory $configFactory)
-	{
+	public function __construct( private ConfigFactory $configFactory ) {
 	}
 
-	/**
-	 * Load a new object from a database row.
-	 * @param string    File Name
-	 * @param string    File Path
-	 * @return Font|bool New Font Object or False on Error.
-	 */
-	public static function loadFromFile( $file, $path ) {
-		$font = new Font();
-		$font->setFileName( $file );
-		$type = $font->getFileType();
-		if ( $type === false ) {
-			return false;
-		} else {
-			$font->setName( ucwords( str_replace( '.' . $type, '', $font->getFileName() ) ) );
-		}
-		$font->setFilePath( $path );
-
-		return $font;
-	}
 
 	/**
 	 * Set the font file name.

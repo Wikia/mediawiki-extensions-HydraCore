@@ -1,6 +1,6 @@
 <?php
 
-use HydraCore\Font;
+use HydraCore\FontFactory;
 
 /**
  * Curse Inc.
@@ -43,7 +43,7 @@ class SpecialFontManager extends SpecialPage {
 	 */
 	public function __construct(
 		private ConfigFactory $configFactory,
-		private Font $font
+		private FontFactory $font
 	) {
 		parent::__construct('FontManager');
 
@@ -101,7 +101,7 @@ class SpecialFontManager extends SpecialPage {
 				}
 				$_font = $this->font->loadFromFile( $file, $ceFontPath . DIRECTORY_SEPARATOR . $file );
 
-				if ( $_font !== false ) {
+				if ( $_font !== null ) {
 					$fonts[$_font->getFileName()] = $_font;
 				}
 			}
@@ -127,7 +127,7 @@ class SpecialFontManager extends SpecialPage {
 		if ( $file instanceof WebRequestUpload ) {
 			$_font = $this->font->loadFromFile( $file->getName(), $file->getTempName() );
 
-			if ( $_font !== false ) {
+			if ( $_font !== null ) {
 				$success = $_font->moveFile( $ceFontPath, $file->getName(), $this->wgRequest->getBool( 'overwrite' ) );
 			}
 		}

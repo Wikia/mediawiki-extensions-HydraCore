@@ -38,6 +38,14 @@ class HydraCoreHooks implements
 	}
 
 	/**
+	 * Add hooks late so that they are ensured to come last.
+	 */
+	public static function addLateHooks(): void {
+		global $wgHooks;
+		$wgHooks['APIAfterExecute'][] = 'HydraCoreHooks::onAPIAfterExecute';
+	}
+
+	/**
 	 * Setup all the parser functions
 	 */
 	public function onParserFirstCallInit( $parser ): void {
