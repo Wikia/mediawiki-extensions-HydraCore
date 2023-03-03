@@ -13,6 +13,8 @@
 use MediaWiki\MediaWikiServices;
 
 require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
+
+//todo probably to fix or drop, as rev_text_id was dropped https://github.com/Wikia/mediawiki/blob/master/maintenance/archives/patch-revision-actor-comment-MCR.sql
 class FixMissingRevisions extends Maintenance {
 	/**
 	 * Main Constructor
