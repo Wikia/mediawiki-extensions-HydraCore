@@ -87,6 +87,5 @@
 	"gamepedia-support-url": "https://support.fandom.com",
 	"noticeboard": "Admin noticeboard",
 	"noticeboard-url": "Project:Admin noticeboard",
-	"api-parse-withads-desc": "Add advertisements to output.",
 	"api-parse-modified-hydracore": "Extended by HydraCore"
 }

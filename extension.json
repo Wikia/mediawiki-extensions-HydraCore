@@ -140,15 +140,9 @@
 		"localBasePath": "",
 		"remoteExtPath": "HydraCore"
 	},
-	"ExtensionFunctions": [
-		"HydraCoreHooks::addLateHooks"
-	],
 	"Hooks": {
-		"APIAfterExecute": "main",
-		"APIGetAllowedParams": "main",
 		"APIGetDescriptionMessages": "main",
-		"APIGetParamDescriptionMessages": "main",
-		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
+		"BeforePageDisplayMobile": "main",
 		"ParserFirstCallInit": "main"
 	},
 	"HookHandlers": {
