@@ -14,31 +14,16 @@
 
 namespace HydraCore;
 
-use MediaWiki\MediaWikiServices;
+use ConfigFactory;
 
+//todo seems that class not in use outside the extension. One usage in \SpecialFontManager
 class Font {
 
 	private $data = [];
 
-	/**
-	 * Load a new object from a database row.
-	 * @param string    File Name
-	 * @param string    File Path
-	 * @return Font|bool New Font Object or False on Error.
-	 */
-	public static function loadFromFile( $file, $path ) {
-		$font = new Font();
-		$font->setFileName( $file );
-		$type = $font->getFileType();
-		if ( $type === false ) {
-			return false;
-		} else {
-			$font->setName( ucwords( str_replace( '.' . $type, '', $font->getFileName() ) ) );
-		}
-		$font->setFilePath( $path );
-
-		return $font;
+	public function __construct( private ConfigFactory $configFactory ) {
 	}
+
 
 	/**
 	 * Set the font file name.
@@ -54,8 +39,7 @@ class Font {
 	 * @return mixed String File Type Extension or False for no File Type.
 	 */
 	public function getFileType() {
-		$ceFontTypes = MediaWikiServices::getInstance()
-			->getConfigFactory()->makeConfig( 'hydracore' )->get( 'CEFontTypes' );
+		$ceFontTypes = $this->configFactory->makeConfig( 'hydracore' )->get( 'CEFontTypes' );
 
 		$lastDot = strrpos( $this->data['file_name'], '.' );
 		if ( $lastDot !== false ) {
@@ -155,7 +139,7 @@ class Font {
 	 * @return string Font URL
 	 */
 	public function getUrl() {
-		$ceFontUrl = \ConfigFactory::getDefaultInstance()->makeConfig( 'hydracore' )->get( 'CEFontUrl' );
+		$ceFontUrl = $this->configFactory->makeConfig('hydracore')->get('CEFontUrl');
 
 		return rtrim( $ceFontUrl, DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . $this->getFileName();
 	}

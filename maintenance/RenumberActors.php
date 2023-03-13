@@ -11,7 +11,6 @@
 
 require_once dirname(__DIR__, 3) . '/maintenance/Maintenance.php';
 
-use MediaWiki\MediaWikiServices;
 
 /**
  * Maintenance script to renumber actors in the wiki database to match the
@@ -265,7 +264,7 @@ class RenumberActors extends LoggedUpdateMaintenance {
 		$this->output("Renumbering $tableName into $newTableName\n");
 
 		$dbr = $this->getDB(DB_REPLICA);
-		$dbw = $this->getDB(DB_MASTER);
+		$dbw = $this->getDB(DB_PRIMARY);
 
 		$dbw->query(
 			'DROP TABLE IF EXISTS ' . $dbw->addIdentifierQuotes($newTableName)
@@ -317,7 +316,7 @@ class RenumberActors extends LoggedUpdateMaintenance {
 		$newTableName = $this->getTempTableName($tableName);
 		$this->output("Dropping $tableName and renaming $newTableName\n");
 
-		$dbw = $this->getDB(DB_MASTER);
+		$dbw = $this->getDB(DB_PRIMARY);
 
 		$dbw->query(
 			'DROP TABLE ' . $dbw->addIdentifierQuotes($tableName)
@@ -350,7 +349,7 @@ class RenumberActors extends LoggedUpdateMaintenance {
 
 			if ($sharedRow === false || $sharedRow['actor_id'] === null) {
 				$this->output("... creating new actor for $localActorName\n");
-				$dbw = $this->getDB(DB_MASTER);
+				$dbw = $this->getDB(DB_PRIMARY);
 				$dbw->insert(
 					'hydra.actor',
 					[
@@ -371,7 +370,7 @@ class RenumberActors extends LoggedUpdateMaintenance {
 
 			if ($sharedRow === false || $sharedRow['actor_id'] === null) {
 				$this->output("... creating new actor for $localActorName\n");
-				$dbw = $this->getDB(DB_MASTER);
+				$dbw = $this->getDB(DB_PRIMARY);
 				$dbw->insert(
 					'hydra.actor',
 					[

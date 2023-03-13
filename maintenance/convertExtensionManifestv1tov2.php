@@ -17,7 +17,7 @@ class convertExtensionManifestv1tov2 extends Maintenance {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->mDescription = "Convert Extension Manifest from v1 to v2.";
+		$this->parameters->setDescription('Convert Extension Manifest from v1 to v2.');
 		$this->addArg( 'path', 'Location to the extension manifest you wish to convert.', true );
 	}
 

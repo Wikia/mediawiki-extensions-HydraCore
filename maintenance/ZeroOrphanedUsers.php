@@ -8,6 +8,7 @@
  * @link      https://gitlab.com/hydrawiki
 **/
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\Rdbms\IDatabase;
 
 require_once dirname(dirname(dirname(__DIR__))) . '/maintenance/Maintenance.php';
@@ -166,7 +167,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 			"Beginning cleanup of $table\n"
 		);
 
-		$dbw = $this->getDB(DB_MASTER);
+		$dbw = $this->getDB(DB_PRIMARY);
 		$next = '1=1';
 		$countAssigned = 0;
 		$countNamed = 0;
@@ -187,21 +188,23 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 			if (!$res->numRows()) {
 				break;
 			}
-
+			$services = MediaWikiServices::getInstance();
+			$userIdentityLookup = $services->getUserIdentityLookup();
+			$userFactory = $services->getUserFactory();
 			// Update the existing rows
 			foreach ($res as $row) {
 				$name = $row->$nameField;
 				$userIdGiven = (int)$row->$idField;
-				$userIdTest = User::idFromName($name);
+
+				$userIdTest = $userIdentityLookup->getUserIdentityByName( $name );
 				if ($userIdTest !== null) {
-					$userIdTest = intval($userIdTest);
+					$userIdTest = $userIdTest->getId();
 				}
-				$usable = User::isUsableName($name);
 				$set = [];
 				$errors = [];
 
 				if (empty($name)) {
-					$user = User::newFromId($userIdGiven);
+					$user = $userFactory->newFromId( $userIdGiven );
 					$user->load();
 					if (!$user->getId()) {
 						$name = '@Hippopotamus';
@@ -247,7 +250,7 @@ class ZeroOrphanedUsers extends LoggedUpdateMaintenance {
 
 			list( $next, $display ) = $this->makeNextCond($dbw, $orderby, $row);
 			$this->output("... $display\n");
-			wfWaitForSlaves();
+			$services->getDBLoadBalancerFactory()->waitForReplication();
 		}
 
 		$this->output(

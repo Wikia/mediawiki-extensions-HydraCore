@@ -11,6 +11,8 @@
  *
  **/
 
+use MediaWiki\MediaWikiServices;
+
 require_once(dirname(__DIR__, 3).'/maintenance/Maintenance.php');
 
 class nukeInfiniteIPBans extends Maintenance {
@@ -26,7 +28,7 @@ class nukeInfiniteIPBans extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->mDescription = "Nukes infinite IP bans in the database.";
+		$this->parameters->setDescription( 'Nukes infinite IP bans in the database.');
 	}
 
 	/**
@@ -36,7 +38,9 @@ class nukeInfiniteIPBans extends Maintenance {
 	 * @return	void
 	 */
 	public function execute() {
-		$this->DB = wfGetDB(DB_MASTER);
+		$this->DB = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 
 		$result = $this->DB->select(
 			['ipblocks'],

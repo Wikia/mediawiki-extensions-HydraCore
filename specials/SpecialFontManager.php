@@ -1,7 +1,6 @@
 <?php
 
-use HydraCore\Font;
-use MediaWiki\MediaWikiServices;
+use HydraCore\FontFactory;
 
 /**
  * Curse Inc.
@@ -42,7 +41,10 @@ class SpecialFontManager extends SpecialPage {
 	 * Main Constructor
 	 * @return    void
 	 */
-	public function __construct() {
+	public function __construct(
+		private ConfigFactory $configFactory,
+		private FontFactory $font
+	) {
 		parent::__construct('FontManager');
 
 		$this->wgRequest	= $this->getRequest();
@@ -71,7 +73,7 @@ class SpecialFontManager extends SpecialPage {
 	 * Font Upload Page
 	 */
 	public function fontManagerPage(): void {
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'hydracore' );
+		$config = $this->configFactory->makeConfig( 'hydracore' );
 		$ceFontPath = $config->get( 'CEFontPath' );
 
 		if ( !is_dir( $ceFontPath ) ) {
@@ -97,9 +99,9 @@ class SpecialFontManager extends SpecialPage {
 				if ( $file == '.' || $file == '..' ) {
 					continue;
 				}
-				$_font = Font::loadFromFile( $file, $ceFontPath . DIRECTORY_SEPARATOR . $file );
+				$_font = $this->font->loadFromFile( $file, $ceFontPath . DIRECTORY_SEPARATOR . $file );
 
-				if ( $_font !== false ) {
+				if ( $_font !== null ) {
 					$fonts[$_font->getFileName()] = $_font;
 				}
 			}
@@ -115,7 +117,7 @@ class SpecialFontManager extends SpecialPage {
 	 * @return bool Successful Upload
 	 */
 	public function fontManagerUpload() {
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'hydracore' );
+		$config = $this->configFactory->makeConfig( 'hydracore' );
 		$ceFontPath = $config->get( 'CEFontPath' );
 
 		$success = false;
@@ -123,9 +125,9 @@ class SpecialFontManager extends SpecialPage {
 		$file = $this->wgRequest->getUpload( 'font_file' );
 
 		if ( $file instanceof WebRequestUpload ) {
-			$_font = Font::loadFromFile( $file->getName(), $file->getTempName() );
+			$_font = $this->font->loadFromFile( $file->getName(), $file->getTempName() );
 
-			if ( $_font !== false ) {
+			if ( $_font !== null ) {
 				$success = $_font->moveFile( $ceFontPath, $file->getName(), $this->wgRequest->getBool( 'overwrite' ) );
 			}
 		}

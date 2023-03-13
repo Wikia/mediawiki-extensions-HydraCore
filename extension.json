@@ -52,7 +52,13 @@
 		"font_upload"
 	],
 	"SpecialPages": {
-		"FontManager": "SpecialFontManager"
+		"FontManager": {
+			"class": "SpecialFontManager",
+			"services": [
+				"ConfigFactory",
+				"HydraCore\\FontFactory"
+			]
+		}
 	},
 	"MessagesDirs": {
 		"HydraCore": [
@@ -64,10 +70,11 @@
 		"SpecialHydraCore": "HydraCore.alias.php"
 	},
 	"AutoloadClasses": {
-		"HydraCoreHooks": "HydraCore.hooks.php",
+		"HydraCoreHooks": "HydraCoreHooks.php",
 		"HydraCore": "classes/HydraCore.php",
 		"HydraApiBase": "classes/HydraApiBase.php",
 		"HydraCore\\Font": "classes/Font.php",
+		"HydraCore\\FontFactory": "classes/FontFactory.php",
 		"HTMLDynamicHiddenField": "classes/HTMLDynamicHiddenField.php",
 		"HydraCore\\SpecialPage": "specials/SpecialPage.php",
 		"SpecialFontManager": "specials/SpecialFontManager.php",
@@ -133,16 +140,20 @@
 		"localBasePath": "",
 		"remoteExtPath": "HydraCore"
 	},
-	"ExtensionFunctions": [
-		"HydraCoreHooks::addLateHooks"
-	],
 	"Hooks": {
-		"APIGetAllowedParams": "HydraCoreHooks::onAPIGetAllowedParams",
-		"APIGetDescriptionMessages": "HydraCoreHooks::onAPIGetDescriptionMessages",
-		"APIGetParamDescriptionMessages": "HydraCoreHooks::onAPIGetParamDescriptionMessages",
-		"BeforePageDisplayMobile": "HydraCoreHooks::onBeforePageDisplayMobile",
-		"ParserFirstCallInit": "HydraCoreHooks::onParserFirstCallInit"
+		"APIGetDescriptionMessages": "main",
+		"BeforePageDisplayMobile": "main",
+		"ParserFirstCallInit": "main"
 	},
+	"HookHandlers": {
+		"main": {
+			"class": "HydraCoreHooks",
+			"services": [
+				"HydraCore"
+			]
+		}
+	},
+	"ServiceWiringFiles": ["ServiceWiring.php"],
 	"ConfigRegistry": {
 		"hydracore": "GlobalVarConfig::newInstance"
 	},

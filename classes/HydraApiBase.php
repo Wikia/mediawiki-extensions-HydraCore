@@ -12,6 +12,7 @@
  *
  */
 
+use MediaWiki\MediaWikiServices;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -61,9 +62,10 @@ abstract class HydraApiBase extends ApiBase {
 		$module = $this->getMain()->getVal( 'modules' );
 		$dos = array_keys( $this->getActions() );
 		$links = [];
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
 
-		array_map( static function ( $do ) use ( &$links, $module ) {
-			$link = wfExpandUrl( '/api.php?action=help&modules=' . $module . '&do=' . $do );
+		array_map( static function ( $do ) use ( &$links, $module, $urlUtils ) {
+			$link = $urlUtils->expand( '/api.php?action=help&modules=' . $module . '&do=' . $do );
 			$links[] = '[' . $link . ' ' . $do . ']';
 		}, $dos );
 

@@ -12,6 +12,8 @@
  *
 **/
 
+use MediaWiki\MediaWikiServices;
+
 require_once(dirname(__DIR__, 3).'/maintenance/Maintenance.php');
 
 class FindDuplicateUniquePages extends Maintenance {
@@ -24,7 +26,7 @@ class FindDuplicateUniquePages extends Maintenance {
 	public function __construct() {
 		parent::__construct();
 
-		$this->mDescription = "Finds duplicate unique pages.";
+		$this->parameters->setDescription('Finds duplicate unique pages.');
 	}
 
 	/**
@@ -34,7 +36,9 @@ class FindDuplicateUniquePages extends Maintenance {
 	 * @return	void
 	 */
 	public function execute() {
-		$db = wfGetDB(DB_MASTER);
+		$db = MediaWikiServices::getInstance()
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_PRIMARY );
 		$result = $db->query("SELECT count(CONCAT(page_namespace, '-', page_title)) AS c, CONCAT(page_namespace, '-', page_title) AS n FROM page GROUP BY n HAVING c > 1;");
 		while ($row = $result->fetchRow()) {
 			list($namespace, $title) = explode('-', $row['n'], 2);

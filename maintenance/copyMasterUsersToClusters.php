@@ -37,11 +37,11 @@ class CopyMasterUsersToClusters extends Maintenance {
 			$clusterDBs[$clusterName] = MediaWikiServices::getInstance()
 				->getDBLoadBalancerFactory()
 				->getExternalLB($clusterName)
-				->getConnection(DB_MASTER);
+				->getConnection(DB_PRIMARY);
 		}
 
 		$startFrom = $this->getOption('start', 1);
-		$dbw = $this->getDB(DB_MASTER);
+		$dbw = $this->getDB(DB_PRIMARY);
 		$next = 'user.user_id >= ' . intval($startFrom);
 		// save renames for the end
 		$needRename = [];
