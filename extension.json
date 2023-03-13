@@ -74,6 +74,7 @@
 		"HydraCore": "classes/HydraCore.php",
 		"HydraApiBase": "classes/HydraApiBase.php",
 		"HydraCore\\Font": "classes/Font.php",
+		"HydraCore\\FontFactory": "classes/FontFactory.php",
 		"HTMLDynamicHiddenField": "classes/HTMLDynamicHiddenField.php",
 		"HydraCore\\SpecialPage": "specials/SpecialPage.php",
 		"SpecialFontManager": "specials/SpecialFontManager.php",
