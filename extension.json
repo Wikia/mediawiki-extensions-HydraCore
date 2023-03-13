@@ -142,15 +142,11 @@
 	},
 	"Hooks": {
 		"APIGetDescriptionMessages": "main",
-		"BeforePageDisplayMobile": "main",
-		"ParserFirstCallInit": "main"
+		"BeforePageDisplayMobile": "main"
 	},
 	"HookHandlers": {
 		"main": {
-			"class": "HydraCoreHooks",
-			"services": [
-				"HydraCore"
-			]
+			"class": "HydraCoreHooks"
 		}
 	},
 	"ServiceWiringFiles": ["ServiceWiring.php"],

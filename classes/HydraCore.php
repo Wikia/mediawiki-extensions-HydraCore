@@ -1,19 +1,11 @@
 <?php
 
-use Wikimedia\Rdbms\ILoadBalancer;
-
-
 /**
  * Collection of basic utility functions
  * @author Noah Manneschmidt
  */
 
 class HydraCore {
-	public function __construct(
-		private WANObjectCache $cache,
-		private ILoadBalancer $loadBalancer
-	) {
-	}
 
 	/**
 	 * Inserts new elements into a string indexed array at a specific point
@@ -107,30 +99,6 @@ class HydraCore {
 		}
 		$extraAttribs['class'] = 'fa fa-' . $name;
 		return Html::element( 'span', $extraAttribs );
-	}
-
-	/**
-	 * Returns the number of users who have made at least one edit on the wiki.
-	 */
-	public function numberOfContributors() {
-		$key = $this->cache->makeKey( 'NumberOfContributors' );
-		$hit = $this->cache->get( $key );
-		if ( !$hit ) {
-			$actorQuery = [ 'tables' => [], 'joins' => [] ];
-			$userField = 'rev_user';
-
-			$db = $this->loadBalancer->getConnection( DB_REPLICA );
-			$hit = $db->selectField(
-				[ 'revision' ] + $actorQuery['tables'],
-				"count(distinct $userField)",
-				'',
-				__METHOD__,
-				[],
-				$actorQuery['joins']
-			);
-			$this->cache->set( $key, $hit, 3600 );
-		}
-		return $hit;
 	}
 
 	/**
