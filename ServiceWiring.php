@@ -7,10 +7,7 @@ use MediaWiki\MediaWikiServices;
 
 return [
 	HydraCore::class => static function ( MediaWikiServices $services ): HydraCore {
-		return new HydraCore(
-			$services->getMainWANObjectCache(),
-			$services->getDBLoadBalancer(),
-		);
+		return new HydraCore();
 	},
 	Font::class => static function ( MediaWikiServices $services ): Font {
 		return new Font(

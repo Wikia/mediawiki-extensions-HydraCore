@@ -16,12 +16,8 @@ use MediaWiki\Hook\ParserFirstCallInitHook;
  *
  */
 class HydraCoreHooks implements
-	APIGetDescriptionMessagesHook,
-	ParserFirstCallInitHook
+	APIGetDescriptionMessagesHook
 {
-
-	public function __construct( private HydraCore $core ) {
-	}
 
 	/**
 	 * Force X-Mobile header.
@@ -29,13 +25,6 @@ class HydraCoreHooks implements
 	public function onBeforePageDisplayMobile( $output, $skin ): void {
 		$response = $output->getRequest()->response();
 		$response->header( "X-Mobile: true" );
-	}
-
-	/**
-	 * Setup all the parser functions
-	 */
-	public function onParserFirstCallInit( $parser ): void {
-		$parser->setFunctionHook( 'numberofcontributors', [$this->core, 'numberOfContributors'] );
 	}
 
 	/**
