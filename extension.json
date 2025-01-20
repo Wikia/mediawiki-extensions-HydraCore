@@ -17,7 +17,7 @@
 			"abusefilter-log-detail": true,
 			"abusefilter-modify": true,
 			"abusefilter-modify-restricted": true,
-			"abusefilter-private": true,
+			"abusefilter-privatedetails": true,
 			"autopatrol": true,
 			"block": true,
 			"blockemail": true,
