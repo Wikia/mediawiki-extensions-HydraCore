@@ -1,170 +1,157 @@
 {
-	"name": "HydraCore",
-	"version": "3.0.3",
-	"author": [
-		"Hydra Wiki Platform Team"
-	],
-	"license-name": "GPL-2.0-or-later",
-	"descriptionmsg": "hydracore_description",
-	"type": "other",
-	"requires": {
-		"MediaWiki": ">= 1.29.0"
-	},
-	"GroupPermissions": {
-		"grasp": {
-			"abusefilter-view": true,
-			"abusefilter-log": true,
-			"abusefilter-log-detail": true,
-			"abusefilter-modify": true,
-			"abusefilter-modify-restricted": true,
-			"abusefilter-privatedetails": true,
-			"autopatrol": true,
-			"block": true,
-			"blockemail": true,
-			"createpage": true,
-			"createtalk": true,
-			"delete": true,
-			"deletedhistory": true,
-			"deletedtext": true,
-			"editinterface": true,
-			"ipblock-exempt": true,
-			"globalblock": true,
-			"move": true,
-			"move-subpages": true,
-			"movefile": true,
-			"noratelimit": true,
-			"nuke": true,
-			"patrol": true,
-			"profile-moderate": true,
-			"protect": true,
-			"reupload": true,
-			"reupload-shared": true,
-			"rollback": true,
-			"unblockself": true,
-			"undelete": true
-		},
-		"sysop": {
-			"font_manager": true
-		}
-	},
-	"AvailableRights": [
-		"font_manager",
-		"font_upload"
-	],
-	"SpecialPages": {
-		"FontManager": {
-			"class": "SpecialFontManager",
-			"services": [
-				"ConfigFactory",
-				"HydraCore\\FontFactory"
-			]
-		}
-	},
-	"MessagesDirs": {
-		"HydraCore": [
-			"i18n"
-		]
-	},
-	"ExtensionMessagesFiles": {
-		"HydraCoreMagic": "HydraCore.i18n.magic.php",
-		"SpecialHydraCore": "HydraCore.alias.php"
-	},
-	"AutoloadClasses": {
-		"HydraCoreHooks": "HydraCoreHooks.php",
-		"HydraCore": "classes/HydraCore.php",
-		"HydraApiBase": "classes/HydraApiBase.php",
-		"HydraCore\\Font": "classes/Font.php",
-		"HydraCore\\FontFactory": "classes/FontFactory.php",
-		"HTMLDynamicHiddenField": "classes/HTMLDynamicHiddenField.php",
-		"HydraCore\\SpecialPage": "specials/SpecialPage.php",
-		"SpecialFontManager": "specials/SpecialFontManager.php",
-		"TemplateFontManager": "templates/TemplateFontManager.php",
-		"TemplatePagination": "templates/TemplatePagination.php"
-	},
-	"ResourceModules": {
-		"ext.hydraCore.pagination.styles": {
-			"targets": [
-				"desktop",
-				"mobile"
-			],
-			"styles": [
-				"css/pagination.css"
-			],
-			"position": "bottom"
-		},
-		"ext.hydraCore.button.styles": {
-			"styles": [
-				"css/button.css"
-			],
-			"targets": [
-				"desktop",
-				"mobile"
-			],
-			"position": "top"
-		},
-		"ext.hydraCore.font-awesome.styles": {
-			"styles": [
-				"css/fontawesome/all.min.css"
-			],
-			"targets": [
-				"desktop",
-				"mobile"
-			],
-			"position": "bottom"
-		},
-		"ext.hydraCore.fontManager.styles": {
-			"styles": [
-				"css/fontmanager.css"
-			],
-			"targets": [
-				"desktop",
-				"mobile"
-			],
-			"position": "top"
-		},
-		"jquery.tablesorter2": {
-			"scripts": [
-				"js/jquery.tablesorter.js"
-			],
-			"styles": [
-				"css/tablesorter.minimal.css"
-			],
-			"targets": [
-				"desktop",
-				"mobile"
-			],
-			"position": "bottom"
-		}
-	},
-	"ResourceFileModulePaths": {
-		"localBasePath": "",
-		"remoteExtPath": "HydraCore"
-	},
-	"Hooks": {
-		"APIGetDescriptionMessages": "main",
-		"BeforePageDisplayMobile": "main"
-	},
-	"HookHandlers": {
-		"main": {
-			"class": "HydraCoreHooks"
-		}
-	},
-	"ServiceWiringFiles": ["ServiceWiring.php"],
-	"ConfigRegistry": {
-		"hydracore": "GlobalVarConfig::newInstance"
-	},
-	"config": {
-		"CEFontPath": "media/hydra/fonts",
-		"CEFontUrl": "/media/hydra/fonts",
-		"CEFontTypes": [
-			"eot",
-			"otf",
-			"svg",
-			"ttc",
-			"ttf",
-			"woff"
-		],
-		"ChildClusterServers": []
-	},
-	"manifest_version": 1
+  "name": "HydraCore",
+  "version": "3.0.3",
+  "author": [
+    "Hydra Wiki Platform Team"
+  ],
+  "license-name": "GPL-2.0-or-later",
+  "descriptionmsg": "hydracore_description",
+  "type": "other",
+  "requires": {
+    "MediaWiki": ">= 1.29.0"
+  },
+  "GroupPermissions": {
+    "grasp": {
+      "abusefilter-view": true,
+      "abusefilter-log": true,
+      "abusefilter-log-detail": true,
+      "abusefilter-modify": true,
+      "abusefilter-modify-restricted": true,
+      "abusefilter-privatedetails": true,
+      "autopatrol": true,
+      "block": true,
+      "blockemail": true,
+      "createpage": true,
+      "createtalk": true,
+      "delete": true,
+      "deletedhistory": true,
+      "deletedtext": true,
+      "editinterface": true,
+      "ipblock-exempt": true,
+      "globalblock": true,
+      "move": true,
+      "move-subpages": true,
+      "movefile": true,
+      "noratelimit": true,
+      "nuke": true,
+      "patrol": true,
+      "profile-moderate": true,
+      "protect": true,
+      "reupload": true,
+      "reupload-shared": true,
+      "rollback": true,
+      "unblockself": true,
+      "undelete": true
+    },
+    "sysop": {
+      "font_manager": true
+    }
+  },
+  "AvailableRights": [
+    "font_manager",
+    "font_upload"
+  ],
+  "MessagesDirs": {
+    "HydraCore": [
+      "i18n"
+    ]
+  },
+  "ExtensionMessagesFiles": {
+    "HydraCoreMagic": "HydraCore.i18n.magic.php",
+    "SpecialHydraCore": "HydraCore.alias.php"
+  },
+  "AutoloadClasses": {
+    "HydraCoreHooks": "HydraCoreHooks.php",
+    "HydraCore": "classes/HydraCore.php",
+    "HydraApiBase": "classes/HydraApiBase.php",
+    "HTMLDynamicHiddenField": "classes/HTMLDynamicHiddenField.php",
+    "TemplatePagination": "templates/TemplatePagination.php"
+  },
+  "ResourceModules": {
+    "ext.hydraCore.pagination.styles": {
+      "targets": [
+        "desktop",
+        "mobile"
+      ],
+      "styles": [
+        "css/pagination.css"
+      ],
+      "position": "bottom"
+    },
+    "ext.hydraCore.button.styles": {
+      "styles": [
+        "css/button.css"
+      ],
+      "targets": [
+        "desktop",
+        "mobile"
+      ],
+      "position": "top"
+    },
+    "ext.hydraCore.font-awesome.styles": {
+      "styles": [
+        "css/fontawesome/all.min.css"
+      ],
+      "targets": [
+        "desktop",
+        "mobile"
+      ],
+      "position": "bottom"
+    },
+    "ext.hydraCore.fontManager.styles": {
+      "styles": [
+        "css/fontmanager.css"
+      ],
+      "targets": [
+        "desktop",
+        "mobile"
+      ],
+      "position": "top"
+    },
+    "jquery.tablesorter2": {
+      "scripts": [
+        "js/jquery.tablesorter.js"
+      ],
+      "styles": [
+        "css/tablesorter.minimal.css"
+      ],
+      "targets": [
+        "desktop",
+        "mobile"
+      ],
+      "position": "bottom"
+    }
+  },
+  "ResourceFileModulePaths": {
+    "localBasePath": "",
+    "remoteExtPath": "HydraCore"
+  },
+  "Hooks": {
+    "APIGetDescriptionMessages": "main"
+  },
+  "HookHandlers": {
+    "main": {
+      "class": "HydraCoreHooks"
+    }
+  },
+  "ServiceWiringFiles": [
+    "ServiceWiring.php"
+  ],
+  "ConfigRegistry": {
+    "hydracore": "GlobalVarConfig::newInstance"
+  },
+  "config": {
+    "CEFontPath": "media/hydra/fonts",
+    "CEFontUrl": "/media/hydra/fonts",
+    "CEFontTypes": [
+      "eot",
+      "otf",
+      "svg",
+      "ttc",
+      "ttf",
+      "woff"
+    ],
+    "ChildClusterServers": []
+  },
+  "manifest_version": 1
 }

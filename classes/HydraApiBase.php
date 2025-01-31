@@ -12,6 +12,7 @@
  *
  */
 
+use MediaWiki\Api\ApiBase;
 use MediaWiki\MediaWikiServices;
 use Wikimedia\ParamValidator\ParamValidator;
 
@@ -20,7 +21,7 @@ use Wikimedia\ParamValidator\ParamValidator;
  * Also implement the usual Api methods getDescription and getParamDescription
  */
 abstract class HydraApiBase extends ApiBase {
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'do' => 'The action that should be performed',
 			'token' => 'The edit token for the current user, for write actions',
@@ -99,7 +100,7 @@ abstract class HydraApiBase extends ApiBase {
 	 */
 	abstract public function getActions(): array;
 
-	public function needsToken() {
+	public function needsToken(): false|string {
 		$do = $this->getMain()->getVal( 'do' );
 		if ( $do ) {
 			return $this->getActionParam( 'tokenRequired' ) ? 'csrf' : false;
@@ -121,15 +122,18 @@ abstract class HydraApiBase extends ApiBase {
 		return false;
 	}
 
-	public function getTokenSalt() {
+	public function getTokenSalt(): false|string {
 		return ( $this->needsToken() ? '' : false );
 	}
 
+	/**
+	 * @throws \MediaWiki\Api\ApiUsageException
+	 */
 	public function execute() {
 		$do = $this->getMain()->getVal( 'do' );
 		$method = 'do' . ucfirst( $do );
 
-		if ( !in_array( $do, array_keys( $this->getActions() ) ) ) {
+		if ( !array_key_exists( $do, $this->getActions() ) ) {
 			$this->dieWithError( 'Undefined DO action: ' . $do, 'bad_api_request' );
 		}
 
@@ -162,7 +166,7 @@ abstract class HydraApiBase extends ApiBase {
 	 *
 	 * @return int
 	 */
-	protected function getInt( string $key, $default = 0 ): int {
+	protected function getInt( string $key, mixed $default = 0 ): int {
 		return intval( $this->getMain()->getVal( $key, $default ) );
 	}
 }

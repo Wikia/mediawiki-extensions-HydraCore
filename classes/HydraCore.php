@@ -1,10 +1,13 @@
 <?php
 
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+
 /**
  * Collection of basic utility functions
+ *
  * @author Noah Manneschmidt
  */
-
 class HydraCore {
 
 	/**
@@ -12,12 +15,13 @@ class HydraCore {
 	 * Key collisions will mess stuff up
 	 * If the target key does not exist, content will be inserted at the end
 	 *
-	 * @param array    will be modified with new content inserted
-	 * @param mixed    string or int before which the new content will be inserted
-	 * @param array    an array containing content to insert at the new index
+	 * @param array &$target will be modified with new content inserted
+	 * @param mixed $targetKey string or int before which the new content will be inserted
+	 * @param array $insertContent an array containing content to insert at the new index
+	 *
 	 * @return void
 	 */
-	public static function array_insert_before_key( &$target, $targetKey, $insertContent ) {
+	public static function array_insert_before_key( array &$target, mixed $targetKey, array $insertContent ): void {
 		$insertPoint = array_search( $targetKey, array_keys( $target ) );
 		$target = array_merge(
 			array_slice( $target, 0, $insertPoint ),
@@ -45,11 +49,12 @@ class HydraCore {
 	 *     2 => [f]
 	 *   ]
 	 *
-	 * @param array
-	 * @param int    [optional] maximum depth to recurse (default: 10)
+	 * @param array $target
+	 * @param int $maxDepth [optional] maximum depth to recurse (default: 10)
+	 *
 	 * @return array
 	 */
-	public static function array_keys_recursive( $target, $maxDepth = 10 ) {
+	public static function array_keys_recursive( array $target, int $maxDepth = 10 ): array {
 		$allKeys = [];
 		self::collect_keys_recursive( $target, $allKeys, 0, $maxDepth );
 		return $allKeys;
@@ -58,16 +63,17 @@ class HydraCore {
 	/**
 	 * Helper function for array_keys_recursive. Inserts found keys into $result at appropriate depth index.
 	 *
-	 * @param array  from which keys will be extracted
-	 * @param array  to which found keys will be saved
-	 * @param int    current depth at which the function is operating
-	 * @param int    maximum depth to which the funciton should recurse
+	 * @param array $target from which keys will be extracted
+	 * @param array &$result to which found keys will be saved
+	 * @param int $depth current depth at which the function is operating
+	 * @param int $maxDepth maximum depth to which the funciton should recurse
+	 *
 	 * @return void
 	 */
-	private static function collect_keys_recursive( $target, &$result, $depth, $maxDepth ) {
+	private static function collect_keys_recursive( array $target, array &$result, int $depth, int $maxDepth ): void {
 		// nothing to do if we are at the bottom
 		if ( $depth > $maxDepth || empty( $target ) ) {
-			return $result;
+			return;
 		}
 
 		// get keys at current depth
@@ -89,11 +95,12 @@ class HydraCore {
 	 * Find an icon you like http://fortawesome.github.io/Font-Awesome/icons/ then pass its name to this fuction.
 	 * Icons will only display when the module "ext.hydraCore.font-awesome.styles" is included on the page.
 	 *
-	 * @param string  name of the icon to use
-	 * @param array   extra classes to add to the element
+	 * @param string $name name of the icon to use
+	 * @param array $extraClasses extra classes to add to the element
+	 *
 	 * @return string html fragment
 	 */
-	public static function awesomeIcon( $name, array $extraClasses = [], array $extraAttribs = [] ) {
+	public static function awesomeIcon( string $name, array $extraClasses = [], array $extraAttribs = [] ): string {
 		if ( count( $extraClasses ) ) {
 			$name .= ' ' . implode( ' ', $extraClasses );
 		}
@@ -103,13 +110,15 @@ class HydraCore {
 
 	/**
 	 * Helper function that returns generatePagination() already formatted in the default pagination template.
-	 * @param integer    Total number of items to be paginated.
-	 * @param integer    [Optional] How many items to display per page.
-	 * @param integer    [Optional] Start Position
-	 * @param integer    [Optional] Number of extra page numbers to show.
-	 * @param array    [Optional] Array of extra URL arguments to append to pagination URLs.
-	 * @param string    [Optional] Base URL to use.
-	 * @param boolean    [Optional] Show item range next to pagination.
+	 *
+	 * @param Title $title
+	 * @param int $totalItems Total number of items to be paginated.
+	 * @param int $itemsPerPage [Optional] How many items to display per page.
+	 * @param int $itemStart [Optional] Start Position
+	 * @param int $extraPages [Optional] Number of extra page numbers to show.
+	 * @param array $extraArguments [Optional] Array of extra URL arguments to append to pagination URLs.
+	 * @param bool $showTotal [Optional] Show item range next to pagination.
+	 *
 	 * @return string Built Pagination HTML
 	 */
 	public static function generatePaginationHtml(
@@ -135,13 +144,19 @@ class HydraCore {
 	 * Generates page numbers.
 	 * Call this function directly if a custom pagination template is required otherwise use generatePaginationHtml().
 	 *
-	 * @param integer    Total number of items to be paginated.
-	 * @param integer    How many items to display per page.
-	 * @param integer    Start Position
-	 * @param integer    Number of extra page numbers to show.
+	 * @param int $totalItems Total number of items to be paginated.
+	 * @param int $itemsPerPage How many items to display per page.
+	 * @param int $itemStart Start Position
+	 * @param int $extraPages Number of extra page numbers to show.
+	 *
 	 * @return array Generated array of pagination information.
 	 */
-	public static function generatePagination( $totalItems, $itemsPerPage = 100, $itemStart = 0, $extraPages = 4 ) {
+	public static function generatePagination(
+		int $totalItems,
+		int $itemsPerPage = 100,
+		int $itemStart = 0,
+		int $extraPages = 4
+	): array {
 		if ( $totalItems < 1 ) {
 			throw new InvalidArgumentException( 'No items provided' );
 		}
@@ -153,9 +168,9 @@ class HydraCore {
 		$pagination['first'] = [ 'st' => 0, 'selected' => false ];
 		$pagination['last'] = [ 'st' => $lastStart, 'selected' => false ];
 		$itemsEnd = $itemStart +
-					( $itemsPerPage -
-					  ( $currentPage * $itemsPerPage - min( $currentPage * $itemsPerPage, $totalItems ) )
-					);
+			( $itemsPerPage -
+				( $currentPage * $itemsPerPage - min( $currentPage * $itemsPerPage, $totalItems ) )
+			);
 		$pagination['stats'] = [
 			'pages' => $totalPages,
 			'total' => $totalItems,
