@@ -129,7 +129,7 @@ abstract class HydraApiBase extends ApiBase {
 	/**
 	 * @throws \MediaWiki\Api\ApiUsageException
 	 */
-	public function execute() {
+	public function execute(): void {
 		$do = $this->getMain()->getVal( 'do' );
 		$method = 'do' . ucfirst( $do );
 
@@ -146,7 +146,7 @@ abstract class HydraApiBase extends ApiBase {
 			$this->dieWithError( wfMessage( 'badaccess-groups', $perm, 1 )->text(), 'permission_needed' );
 		}
 
-		return $this->$method();
+		$this->$method();
 	}
 
 	private function getPermissionRequired() {
