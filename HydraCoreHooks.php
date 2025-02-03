@@ -1,7 +1,7 @@
 <?php
 
+use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\Hook\APIGetDescriptionMessagesHook;
-use MediaWiki\Hook\ParserFirstCallInitHook;
 
 /**
  * Curse Inc.
@@ -15,28 +15,19 @@ use MediaWiki\Hook\ParserFirstCallInitHook;
  * @link        https://gitlab.com/hydrawiki
  *
  */
-class HydraCoreHooks implements
-	APIGetDescriptionMessagesHook
-{
-
-	/**
-	 * Force X-Mobile header.
-	 */
-	public function onBeforePageDisplayMobile( $output, $skin ): void {
-		$response = $output->getRequest()->response();
-		$response->header( "X-Mobile: true" );
-	}
+class HydraCoreHooks implements APIGetDescriptionMessagesHook {
 
 	/**
 	 * APIGetDescriptionMessages hook handler
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/APIGetDescriptionMessages
+	 *
 	 * @param ApiBase $module
-	 * @param array|string &$msgs
+	 * @param array|string &$msg
 	 */
-	public function onAPIGetDescriptionMessages( $module, &$msgs ): void {
+	public function onAPIGetDescriptionMessages( $module, &$msg ): void {
 		if ( $module->getModuleName() == 'parse' ) {
-			$msgs[] = $module->msg( 'api-parse-modified-hydracore' );
+			$msg[] = $module->msg( 'api-parse-modified-hydracore' );
 		}
 	}
 }

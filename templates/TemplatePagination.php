@@ -5,49 +5,53 @@
  * Pagination Template
  * Taken from the defunct Mouse Framework
  *
- * @author 		Alexia E. Smith
- * @copyright	(c) 2010 - 2014 NoName Studios
- * @license		GPLv3
+ * @author        Alexia E. Smith
+ * @copyright    (c) 2010 - 2014 NoName Studios
+ * @license        GPLv3
  *
-**/
+ **/
+
+use MediaWiki\Title\Title;
 
 class TemplatePagination {
 	/**
 	 * Generates pagination template.
 	 *
-	 * @access	public
-	 * @param	array	Array of pagination information.
-	 * @param	object	Page Title
-	 * @return	string	Built HTML
+	 * @access    public
+	 *
+	 * @param array $pagination Array of pagination information.
+	 * @param Title $title Page Title
+	 *
+	 * @return    string    Built HTML
 	 */
-	public function pagination($pagination, Title $title) {
+	public function pagination( array $pagination, Title $title ): string {
 		$arguments = [];
-		if (!empty($pagination['extra'])) {
+		if ( !empty( $pagination['extra'] ) ) {
 			$arguments = $pagination['extra'];
 		}
 		$html = '';
-		if (isset($pagination['pages']) && count($pagination['pages'])) {
+		if ( isset( $pagination['pages'] ) && count( $pagination['pages'] ) ) {
 			$html .= "
 		<ul class='pagination'>";
-			if (isset($pagination['stats'])) {
-				$html .= "<li class='pagination_stats'>" . wfMessage('pagination_pages', $pagination['stats']['current_page'], $pagination['stats']['pages']) . "</li>";
+			if ( isset( $pagination['stats'] ) ) {
+				$html .= "<li class='pagination_stats'>" . wfMessage( 'pagination_pages', $pagination['stats']['current_page'], $pagination['stats']['pages'] ) . "</li>";
 			}
 
-			if (count($pagination['pages']) > 1) {
-				if ($pagination['first']) {
+			if ( count( $pagination['pages'] ) > 1 ) {
+				if ( $pagination['first'] ) {
 					$html .= "<li><a href='{$title->getFullURL($arguments + ['st' => $pagination['first']['st']])}'>&laquo;</a></li>";
 				}
-				foreach ($pagination['pages'] as $page => $info) {
-					if ($page > 0) {
-						$html .= "<li".($info['selected'] ? " class='selected'" : null)."><a href='{$title->getFullURL($arguments + ['st' => $info['st']])}'>{$page}</a></li>";
+				foreach ( $pagination['pages'] as $page => $info ) {
+					if ( $page > 0 ) {
+						$html .= "<li" . ( $info['selected'] ? " class='selected'" : null ) . "><a href='{$title->getFullURL($arguments + ['st' => $info['st']])}'>$page</a></li>";
 					}
 				}
-				if ($pagination['last']) {
+				if ( $pagination['last'] ) {
 					$html .= "<li><a href='{$title->getFullURL($arguments + ['st' => $pagination['last']['st']])}'>&raquo;</a></li>";
 				}
 			}
-			if ($pagination['showTotal']) {
-				$html .= "<li class='pagination_stats'>" . wfMessage('items_on_page', $pagination['stats']['items_start'], $pagination['stats']['items_end'], $pagination['stats']['total']) . "</li>";
+			if ( $pagination['showTotal'] ) {
+				$html .= "<li class='pagination_stats'>" . wfMessage( 'items_on_page', $pagination['stats']['items_start'], $pagination['stats']['items_end'], $pagination['stats']['total'] ) . "</li>";
 			}
 			$html .= "
 		</ul>";
